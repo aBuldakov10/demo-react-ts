@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createHashRouter, Navigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Page1 from './pages/Page1';
 import Page2 from './pages/Page2';
@@ -7,14 +7,14 @@ import Layout from './components/Layout/Layout';
 import Contacts from './components/Contacts';
 
 const Router = () => {
-  return createBrowserRouter([
+  return createHashRouter([
     {
       path: '/',
-      element: <Navigate to="/demo-react-ts" />,
+      element: <Navigate to="/#" />,
       errorElement: <div>error page</div>,
     },
     {
-      path: '/demo-react-ts',
+      path: '/',
       element: <Layout />,
       children: [
         {
@@ -22,11 +22,11 @@ const Router = () => {
           element: <Home />,
         },
         {
-          path: '/demo-react-ts/1',
+          path: '/1',
           element: <Page1 />,
         },
         {
-          path: '/demo-react-ts/2',
+          path: '/2',
           element: <Page2 />,
           children: [
             {
