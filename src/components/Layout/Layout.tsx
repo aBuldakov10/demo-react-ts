@@ -1,20 +1,22 @@
-import { Link, Outlet } from 'react-router-dom';
+import { FC } from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import * as S from './style';
 
-const Layout = () => {
+const Layout: FC = () => {
   return (
-    <>
-      <header>
-        <Link to="/">Home </Link> <br />
-        <Link to="/1">Page 1 </Link> <br />
-        <Link to="/2">Page 2 </Link>
-      </header>
+    <S.Wrapper>
+      <Header />
 
-      <main>
-        <Outlet />
-      </main>
+      <S.Main>
+        <div className="container">
+          <Outlet />
+        </div>
+      </S.Main>
 
-      <footer>footer</footer>
-    </>
+      <Footer />
+    </S.Wrapper>
   );
 };
 
