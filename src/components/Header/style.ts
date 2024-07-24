@@ -17,7 +17,7 @@ export const Content = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 15px 0;
-  color: ${theme.colors.clrBg};
+  color: ${theme.colors.text_bg};
 `;
 
 export const Menu = styled.div`

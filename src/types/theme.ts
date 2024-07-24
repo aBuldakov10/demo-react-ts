@@ -6,4 +6,6 @@ export interface ThemeType {
   colors: {
     [color in ColorsType]: string;
   };
+  transition: string;
+  border_2: string;
 }

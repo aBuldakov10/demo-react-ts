@@ -11,7 +11,7 @@ const Header: FC = () => {
 
           <S.Menu>
             <Link to="/">Home </Link> <br />
-            <Link to="/1">Todos</Link>
+            <Link to="/todos">Todos</Link>
             {/*<br />*/}
             {/*<Link to="/2">Page 2 </Link>*/}
           </S.Menu>

@@ -9,8 +9,13 @@ export default createGlobalStyle`
 
 html,
 body {
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', sans-serif;
+  color: ${theme.colors.text};
   background: ${theme.colors.bg};
+}
+
+::selection {
+    background: ${theme.colors.second};
 }
 
 html,
@@ -18,6 +23,10 @@ body,
 #root,
 .container {
   height: 100%;
+}
+
+p:last-child {
+  margin-bottom: 0;
 }
 
 a {

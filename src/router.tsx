@@ -1,7 +1,10 @@
 import { createHashRouter, Navigate } from 'react-router-dom';
+// Pages
 import Home from './pages/Home/Home';
-import Page1 from './pages/Page1';
+import Todos from './pages/Todos/Todos';
 import Page2 from './pages/Page2';
+import NoPage from './pages/NoPage/NoPage';
+// Components
 import Work from './components/Work';
 import Layout from './components/Layout/Layout';
 import Contacts from './components/Contacts';
@@ -11,7 +14,7 @@ const Router = () => {
     {
       path: '/',
       element: <Navigate to="/#" />,
-      errorElement: <div>error page</div>,
+      errorElement: <NoPage />,
     },
     {
       path: '/',
@@ -22,8 +25,8 @@ const Router = () => {
           element: <Home />,
         },
         {
-          path: '/1',
-          element: <Page1 />,
+          path: '/todos',
+          element: <Todos />,
         },
         {
           path: '/2',
