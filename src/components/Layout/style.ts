@@ -8,6 +8,6 @@ export const Wrapper = styled.div`
 
 export const Main = styled.main`
   flex-grow: 1;
-  margin-top: 49px;
+  margin-top: 52px;
   padding: 20px 0;
 `;

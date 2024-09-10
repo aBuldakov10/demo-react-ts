@@ -25,6 +25,12 @@ body,
   height: 100%;
 }
 
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 p:last-child {
   margin-bottom: 0;
 }
@@ -33,6 +39,10 @@ a {
   text-decoration: none;
   color: inherit;
   transition: ${theme.transition};
+  
+  &:hover {
+    color: ${theme.colors.second};
+  }
 }
 
 .container {

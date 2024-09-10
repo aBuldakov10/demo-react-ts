@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Collapse } from 'antd';
+import { Collapse, Tabs } from 'antd';
 import * as S from './style';
 
 import type { RadioChangeEvent } from 'antd';
@@ -7,9 +7,23 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getGroups } from '../../store/todos/reducers';
 import { getGroupsSelector } from '../../store/todos/selectors';
 
+import { groups } from './fakeApi';
+import { PlusOutlined } from '@ant-design/icons';
+import TodosContent from '../../components/TodosContent/TodosContent';
+
+interface GroupItem {
+  id: string;
+  groupTitle: string;
+  color: string;
+}
+
 const Todos: FC = () => {
   const dispatch = useAppDispatch();
   const Groups = useAppSelector(getGroupsSelector);
+
+  console.log(Groups, 'Groups');
+
+  const [groupsList, setGroupsList] = useState<any>([]);
 
   const [selectedFilter, setSelectedFilter] = useState(1);
   const [selectedSort, setSelectedSort] = useState(4);
@@ -29,10 +43,25 @@ const Todos: FC = () => {
     { label: 'Сначала завершенные', value: 6 },
   ];
 
-  console.log('1');
-
   useEffect(() => {
     dispatch(getGroups('group 1'));
+
+    const gList = groups.map((item: GroupItem, index) => {
+      return {
+        label: <span style={{ color: item.color }}>{item.groupTitle}</span>,
+        key: index + 1,
+        children: <TodosContent id={item.id} />,
+      };
+    });
+
+    setGroupsList([
+      {
+        label: <span style={{ color: '#222' }}>Все</span>,
+        key: '0',
+        children: <TodosContent id="0" />,
+      },
+      ...gList,
+    ]);
   }, []);
 
   return (
@@ -55,19 +84,15 @@ const Todos: FC = () => {
       </S.Sidebar>
 
       <S.Content>
-        <S.ContentHeading>
-          <S.GroupNav>
-            <div>все</div>
-            <div>group 1</div>
-            <div>group 2</div>
+        <h1>Список дел</h1>
 
-            {Groups.length && Groups.map((item) => <div>{item}</div>)}
-          </S.GroupNav>
+        <S.TabsWrapper>
+          <Tabs defaultActiveKey="0" type="card" items={groupsList} destroyInactiveTabPane={true} />
 
-          <div>+ Новая группа</div>
-        </S.ContentHeading>
-
-        <div>body со списком групп и задач</div>
+          <S.AddGroup onClick={() => {}}>
+            <PlusOutlined />
+          </S.AddGroup>
+        </S.TabsWrapper>
       </S.Content>
     </S.Wrapper>
   );
