@@ -9,7 +9,7 @@
 }
 
 .ant-tabs-content {
-  border-top: 1px solid #d9d9d9;
+  border-top: 1px solid #d3d3d3;
 }
 
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
@@ -22,7 +22,7 @@
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
   padding: 10px 15px;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 0 8px 2px rgba(202, 202, 202, .2);
   transition: .3s ease;
 }
@@ -36,7 +36,7 @@
 }
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:hover span {
-  color: #222 !important;
+  color: #242424 !important;
 }
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {

@@ -50,7 +50,7 @@ const Todos: FC = () => {
       return {
         label: <span style={{ color: item.color }}>{item.groupTitle}</span>,
         key: index + 1,
-        children: <TodosContent id={item.id} />,
+        children: <TodosContent tabId={item.id} />,
       };
     });
 
@@ -58,7 +58,7 @@ const Todos: FC = () => {
       {
         label: <span style={{ color: '#222' }}>Все</span>,
         key: '0',
-        children: <TodosContent id="0" />,
+        children: <TodosContent tabId="0" />,
       },
       ...gList,
     ]);
@@ -66,6 +66,7 @@ const Todos: FC = () => {
 
   return (
     <S.Wrapper>
+      {/*** Сайдбар ***/}
       <S.Sidebar>
         <Collapse defaultActiveKey={['1', '2']} expandIconPosition="end">
           <Collapse.Panel header="Фильтр:" key="1">
@@ -87,9 +88,11 @@ const Todos: FC = () => {
         <h1>Список дел</h1>
 
         <S.TabsWrapper>
+          {/*** Вкладки ***/}
           <Tabs defaultActiveKey="0" type="card" items={groupsList} destroyInactiveTabPane={true} />
 
-          <S.AddGroup onClick={() => {}}>
+          {/*** Добавить вкладку ***/}
+          <S.AddGroup title="Создать группу" onClick={() => {}}>
             <PlusOutlined />
           </S.AddGroup>
         </S.TabsWrapper>

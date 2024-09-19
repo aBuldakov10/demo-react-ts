@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { theme } from '../../styles/theme';
 import CustomRadio from '../../components/Form/CustomRadio/CustomRadio';
+import { theme } from '../../styles/theme';
 
 export const Wrapper = styled.div`
   display: flex;
   gap: 30px;
+  height: 100%;
 `;
 
 export const Sidebar = styled.div`
@@ -37,7 +38,7 @@ export const AddGroup = styled.div`
   align-items: center;
   width: 42px;
   height: 42px;
-  border-radius: 10px;
+  border-radius: ${theme.radius_5};
   background: ${theme.colors.white};
   box-shadow: 0 0 8px 2px rgba(202, 202, 202, 0.2);
   cursor: pointer;

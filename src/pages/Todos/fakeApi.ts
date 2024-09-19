@@ -1,9 +1,9 @@
 export const groups = [
-  { id: '1', groupTitle: 'group 1', color: 'red' },
-  { id: '2', groupTitle: 'group 2', color: 'green' },
-  { id: '3', groupTitle: 'group 3', color: 'blue' },
-  { id: '4', groupTitle: 'group 4', color: 'orange' },
-  { id: '5', groupTitle: 'group 5', color: 'purple' },
+  { id: '1', groupTitle: 'group 1', color: '#f5222d' },
+  { id: '2', groupTitle: 'group 2', color: '#52c41a' },
+  { id: '3', groupTitle: 'group 3', color: '#1890ff' },
+  { id: '4', groupTitle: 'group 4', color: '#fa8c16' },
+  { id: '5', groupTitle: 'group 5', color: '#722ed1' },
 ];
 
 export const tasks = [
