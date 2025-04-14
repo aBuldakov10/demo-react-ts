@@ -36,7 +36,7 @@ export const GroupNoneTasks = styled.span`
 export const GroupAction = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px;
   margin-left: auto;
 
   svg {
@@ -46,26 +46,38 @@ export const GroupAction = styled.div`
 `;
 
 export const AddTask = styled(FileAddOutlined)`
+  padding: 5px;
+  color: ${theme.colors.green_600};
+  border-radius: ${theme.radius_5};
   transition: ${theme.transition};
 
   &:hover {
-    color: ${theme.colors.green_600};
+    color: ${theme.colors.second};
+    background-color: ${theme.colors.black};
   }
 `;
 
 export const EditGroup = styled(EditOutlined)`
+  padding: 5px;
+  color: ${theme.colors.blue_600};
+  border-radius: ${theme.radius_5};
   transition: ${theme.transition};
 
   &:hover {
-    color: ${theme.colors.blue_600};
+    color: ${theme.colors.second};
+    background-color: ${theme.colors.black};
   }
 `;
 
 export const DeleteGroup = styled(DeleteOutlined)`
+  padding: 5px;
+  color: ${theme.colors.red_600};
+  border-radius: ${theme.radius_5};
   transition: ${theme.transition};
 
   &:hover {
-    color: ${theme.colors.red_600};
+    color: ${theme.colors.second};
+    background-color: ${theme.colors.black};
   }
 `;
 
@@ -89,12 +101,12 @@ export const TaskDoneCheck = styled(CustomCheck)`
 
 export const TaskAction = styled.div`
   position: absolute;
-  top: 14px;
+  top: 9px;
   right: 60px;
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px;
 
   svg {
     width: 18px;
@@ -106,4 +118,25 @@ export const TaskActionDate = styled.div`
   margin-right: 50px;
   font-size: 12px;
   line-height: 1;
+`;
+
+export const Task = styled.textarea<{ readOnly: boolean }>`
+  display: block;
+  padding: 5px 8px;
+  width: 100%;
+  border-radius: ${theme.radius_5};
+  border-color: ${theme.colors.border};
+  resize: none;
+  outline: none;
+  transition: ${theme.transition};
+  cursor: ${({ readOnly }) => (readOnly ? 'auto' : 'text')};
+
+  &:focus {
+    border-color: ${({ readOnly }) => (readOnly ? '' : theme.colors.black)};
+  }
+`;
+
+export const TaskEdited = styled.p`
+  margin-top: 5px;
+  text-align: right;
 `;

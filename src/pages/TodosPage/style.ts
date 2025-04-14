@@ -1,14 +1,18 @@
 import styled from 'styled-components';
+import { DeleteOutlined } from '@ant-design/icons/lib';
 import CustomRadio from '../../components/Form/CustomRadio/CustomRadio';
 import { theme } from '../../styles/theme';
 
 export const Wrapper = styled.div`
   display: flex;
+  align-items: flex-start;
   gap: 30px;
   height: 100%;
 `;
 
 export const Sidebar = styled.div`
+  position: sticky;
+  top: 72px;
   width: 20%;
 `;
 
@@ -25,7 +29,7 @@ export const TabsWrapper = styled.div`
   position: relative;
 
   .ant-tabs-nav {
-    width: 90%;
+    width: 92%;
   }
 `;
 
@@ -47,5 +51,22 @@ export const AddGroup = styled.div`
   &:hover {
     background: ${theme.colors.second};
     color: ${theme.colors.text};
+  }
+`;
+
+export const InfoBlock = styled.div`
+  display: flex;
+  gap: 50px;
+`;
+
+export const DeleteTasks = styled(DeleteOutlined)`
+  padding: 5px;
+  color: ${theme.colors.red_600};
+  border-radius: ${theme.radius_5};
+  transition: ${theme.transition};
+
+  &:hover {
+    color: ${theme.colors.second};
+    background-color: ${theme.colors.black};
   }
 `;

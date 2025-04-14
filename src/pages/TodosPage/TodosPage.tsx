@@ -1,29 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Collapse, Tabs } from 'antd';
-import * as S from './style';
-
 import type { RadioChangeEvent } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getGroups } from '../../store/todos/reducers';
-import { getGroupsSelector } from '../../store/todos/selectors';
-
-import { groups } from './fakeApi';
 import { PlusOutlined } from '@ant-design/icons';
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectGroup } from '../../store/todos/reducers';
+import { groupCountSelector, groupsSelector, taskCountSelector } from '../../store/todos/selectors';
+
 import TodosContent from '../../components/TodosContent/TodosContent';
 
-interface GroupItem {
-  id: string;
-  groupTitle: string;
-  color: string;
-}
+import * as S from './style';
 
-const Todos: FC = () => {
+const TodosPage: FC = () => {
   const dispatch = useAppDispatch();
-  const Groups = useAppSelector(getGroupsSelector);
-
-  console.log(Groups, 'Groups');
-
-  const [groupsList, setGroupsList] = useState<any>([]);
+  const groups = useAppSelector(groupsSelector);
+  const groupCount = useAppSelector(groupCountSelector);
+  const taskCount = useAppSelector(taskCountSelector);
 
   const [selectedFilter, setSelectedFilter] = useState(1);
   const [selectedSort, setSelectedSort] = useState(4);
@@ -43,26 +35,22 @@ const Todos: FC = () => {
     { label: 'Сначала завершенные', value: 6 },
   ];
 
-  useEffect(() => {
-    dispatch(getGroups('group 1'));
-
-    const gList = groups.map((item: GroupItem, index) => {
+  const groupTabs = [
+    {
+      key: '0',
+      label: <span>Все</span>,
+      children: <TodosContent tabId="0" />,
+    },
+    ...groups.map(({ id, color, groupTitle }, index) => {
       return {
-        label: <span style={{ color: item.color }}>{item.groupTitle}</span>,
-        key: index + 1,
-        children: <TodosContent tabId={item.id} />,
+        key: (index + 1).toString(),
+        label: <span style={{ color }}>{groupTitle}</span>,
+        children: <TodosContent tabId={id} />,
       };
-    });
+    }),
+  ];
 
-    setGroupsList([
-      {
-        label: <span style={{ color: '#222' }}>Все</span>,
-        key: '0',
-        children: <TodosContent tabId="0" />,
-      },
-      ...gList,
-    ]);
-  }, []);
+  const handleChangeGroup = (key: string) => dispatch(selectGroup(key));
 
   return (
     <S.Wrapper>
@@ -89,16 +77,43 @@ const Todos: FC = () => {
 
         <S.TabsWrapper>
           {/*** Вкладки ***/}
-          <Tabs defaultActiveKey="0" type="card" items={groupsList} destroyInactiveTabPane={true} />
+          <Tabs
+            defaultActiveKey="0"
+            type="card"
+            items={groupTabs}
+            destroyInactiveTabPane={true}
+            onChange={handleChangeGroup}
+          />
 
           {/*** Добавить вкладку ***/}
-          <S.AddGroup title="Создать группу" onClick={() => {}}>
+          <S.AddGroup
+            title="Создать группу"
+            onClick={() => {
+              console.log('add new group');
+            }}
+          >
             <PlusOutlined />
           </S.AddGroup>
         </S.TabsWrapper>
+
+        <S.InfoBlock>
+          {/* Общее количество групп */}
+          <div title="Количество групп">Группы: {groupCount}</div>
+
+          {/* Задач в группе */}
+          <div title="Задач в группе">Задачи: {taskCount}</div>
+
+          {/* удалить завершенные */}
+          {/*<S.DeleteTasks*/}
+          {/*  title="Удалить завершенные"*/}
+          {/*  onClick={() => {*/}
+          {/*    console.log('Удалить завершенные');*/}
+          {/*  }}*/}
+          {/*/>*/}
+        </S.InfoBlock>
       </S.Content>
     </S.Wrapper>
   );
 };
 
-export default Todos;
+export default TodosPage;

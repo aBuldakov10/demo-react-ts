@@ -1,7 +1,7 @@
 import { createHashRouter, Navigate } from 'react-router-dom';
 // Pages
 import Home from './pages/Home/Home';
-import Todos from './pages/Todos/Todos';
+import TodosPage from './pages/TodosPage/TodosPage';
 import Page2 from './pages/Page2';
 import NoPage from './pages/NoPage/NoPage';
 // Components
@@ -26,7 +26,7 @@ const Router = () => {
         },
         {
           path: '/todos',
-          element: <Todos />,
+          element: <TodosPage />,
         },
         {
           path: '/2',

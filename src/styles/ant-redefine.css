@@ -1,7 +1,10 @@
 /*** Tabs ***/
+.ant-tabs {
+  color: #242424;
+}
+
 .ant-tabs-top > .ant-tabs-nav {
-  margin-bottom: 0;
-  padding: 0 10px;
+  margin: 0 10px;
 }
 
 .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
@@ -48,5 +51,5 @@
 }
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active span {
-  color: #ff9000 !important;
+  color: #ff9000;
 }
