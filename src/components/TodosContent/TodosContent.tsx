@@ -1,15 +1,12 @@
 import { FC, useState } from 'react';
 import { Collapse } from 'antd';
-import { useAppSelector } from '../../store/hooks';
-import { filteredTasksSelector, groupsSelector } from '../../store/todos/selectors';
+import { useAppSelector } from '@/store/hooks';
+import { filteredTasksSelector, groupsSelector } from '@/store/todos/selectors';
 import * as S from './style';
 
 const { Panel } = Collapse;
 
 const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
-  // продолжить тут. сделать верстку для задач,
-  // потом прикрутить логику и бэк и поправить (порефакторить?) родительский компонент
-
   const groups = useAppSelector(groupsSelector);
   const filteredTasks = useAppSelector(filteredTasksSelector);
 

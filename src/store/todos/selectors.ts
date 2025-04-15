@@ -1,4 +1,4 @@
-import { RootState } from '../index';
+import { RootState } from '@/store';
 
 export const groupsSelector = (state: RootState) => state.todos.groups;
 

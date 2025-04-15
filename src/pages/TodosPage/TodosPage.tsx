@@ -1,39 +1,17 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Collapse, Tabs } from 'antd';
-import type { RadioChangeEvent } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectGroup } from '../../store/todos/reducers';
-import { groupCountSelector, groupsSelector, taskCountSelector } from '../../store/todos/selectors';
+import { useAppSelector } from '@/store/hooks';
+import { groupsSelector } from '@/store/todos/selectors';
 
-import TodosContent from '../../components/TodosContent/TodosContent';
+import useTodosPage from './useTodosPage';
+import TodosContent from '@/components/TodosContent/TodosContent';
 
 import * as S from './style';
 
 const TodosPage: FC = () => {
-  const dispatch = useAppDispatch();
   const groups = useAppSelector(groupsSelector);
-  const groupCount = useAppSelector(groupCountSelector);
-  const taskCount = useAppSelector(taskCountSelector);
-
-  const [selectedFilter, setSelectedFilter] = useState(1);
-  const [selectedSort, setSelectedSort] = useState(4);
-
-  const handleChangeFilter = (e: RadioChangeEvent) => setSelectedFilter(e.target.value);
-  const handleChangeSort = (e: RadioChangeEvent) => setSelectedSort(e.target.value);
-
-  const filterOptions = [
-    { label: 'Все', value: 1 },
-    { label: 'Активные', value: 2 },
-    { label: 'Завершенные', value: 3 },
-  ];
-
-  const sortOptions = [
-    { label: 'По дате', value: 4 },
-    { label: 'Сначала активные', value: 5 },
-    { label: 'Сначала завершенные', value: 6 },
-  ];
 
   const groupTabs = [
     {
@@ -50,7 +28,17 @@ const TodosPage: FC = () => {
     }),
   ];
 
-  const handleChangeGroup = (key: string) => dispatch(selectGroup(key));
+  const {
+    filterOptions,
+    selectedFilter,
+    sortOptions,
+    selectedSort,
+    groupCount,
+    taskCount,
+    handleChangeFilter,
+    handleChangeSort,
+    handleChangeGroup,
+  } = useTodosPage();
 
   return (
     <S.Wrapper>

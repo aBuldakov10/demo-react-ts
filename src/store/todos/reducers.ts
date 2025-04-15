@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getGroupsThunk } from './thunks';
 
 interface Todos {
   groups: { id: string; groupTitle: string; color: string }[];
@@ -267,6 +268,16 @@ const todos = createSlice({
         state.taskCount = state.filteredTasks.length;
       }
     },
+  },
+  extraReducers: (builder) => {
+    // получение списка групп
+    builder
+      .addCase(getGroupsThunk.pending, () => {})
+      .addCase(getGroupsThunk.fulfilled, (state, { payload }) => {
+        state.groups = payload;
+        state.groupCount = payload.length;
+      })
+      .addCase(getGroupsThunk.rejected, () => {});
   },
 });
 

@@ -1,6 +1,6 @@
+import { FC } from 'react';
 import { Radio, RadioChangeEvent } from 'antd';
 import * as S from './style';
-import { FC } from 'react';
 
 interface OptionsType {
   label: string;
