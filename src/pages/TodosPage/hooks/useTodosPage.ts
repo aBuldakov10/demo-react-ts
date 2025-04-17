@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { RadioChangeEvent } from 'antd';
-
+// Store
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getGroupsThunk } from '@/store/todos/thunks';
+import { openModal } from '@/store/common/reducers';
 import { selectGroup } from '@/store/todos/reducers';
 import { groupCountSelector, taskCountSelector } from '@/store/todos/selectors';
+// Hooks
+import useTodosPageTabs from './useTodosPageTabs';
 
 const useTodosPage = () => {
   const dispatch = useAppDispatch();
@@ -14,37 +17,26 @@ const useTodosPage = () => {
   const [selectedFilter, setSelectedFilter] = useState(1);
   const [selectedSort, setSelectedSort] = useState(4);
 
-  const filterOptions = [
-    { label: 'Все', value: 1 },
-    { label: 'Активные', value: 2 },
-    { label: 'Завершенные', value: 3 },
-  ];
-
-  const sortOptions = [
-    { label: 'По дате', value: 4 },
-    { label: 'Сначала активные', value: 5 },
-    { label: 'Сначала завершенные', value: 6 },
-  ];
-
   useEffect(() => {
-    dispatch(getGroupsThunk());
+    dispatch(getGroupsThunk()); // получение списка групп
   }, []);
 
   /*** Handlers ***/
   const handleChangeFilter = (e: RadioChangeEvent) => setSelectedFilter(e.target.value);
   const handleChangeSort = (e: RadioChangeEvent) => setSelectedSort(e.target.value);
   const handleChangeGroup = (key: string) => dispatch(selectGroup(key));
+  const handleAddGroup = () => dispatch(openModal('AddGroupModal'));
 
   return {
-    filterOptions,
     selectedFilter,
-    sortOptions,
     selectedSort,
+    groupTabs: useTodosPageTabs(),
     groupCount,
     taskCount,
     handleChangeFilter,
     handleChangeSort,
     handleChangeGroup,
+    handleAddGroup,
   };
 };
 

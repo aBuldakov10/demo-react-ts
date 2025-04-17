@@ -1,29 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getGroupsThunk } from './thunks';
+import { GroupsType, TaskType } from '@/types/todos';
 
 interface Todos {
-  groups: { id: string; groupTitle: string; color: string }[];
+  groups: GroupsType[];
   selectedGroupId: string | null;
-  tasks: {
-    id: string;
-    taskTitle: string;
-    description: string;
-    createData: string;
-    createTime: string;
-    isEdited: boolean;
-    isDone: boolean;
-    groupId: string;
-  }[];
-  filteredTasks: {
-    id: string;
-    taskTitle: string;
-    description: string;
-    createData: string;
-    createTime: string;
-    isEdited: boolean;
-    isDone: boolean;
-    groupId: string;
-  }[];
+  tasks: TaskType[];
+  filteredTasks: TaskType[];
   groupCount: null | number;
   taskCount: null | number;
 }
@@ -247,7 +230,7 @@ const initialState: Todos = {
       groupId: 'e65e626c-cb2b-497c-a3f6-24dd80476366',
     },
   ],
-  groupCount: 11,
+  groupCount: null,
   taskCount: 10,
 };
 
@@ -275,7 +258,7 @@ const todos = createSlice({
       .addCase(getGroupsThunk.pending, () => {})
       .addCase(getGroupsThunk.fulfilled, (state, { payload }) => {
         state.groups = payload;
-        state.groupCount = payload.length;
+        state.groupCount = payload?.length;
       })
       .addCase(getGroupsThunk.rejected, () => {});
   },

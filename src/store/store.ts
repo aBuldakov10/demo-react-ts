@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import common from '../store/common/reducers';
 import todos from '../store/todos/reducers';
 
 export const store = configureStore({
   reducer: {
+    common,
     todos,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),

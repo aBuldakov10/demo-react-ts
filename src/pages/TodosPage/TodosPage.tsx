@@ -1,43 +1,25 @@
 import { FC } from 'react';
 import { Collapse, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
-import { useAppSelector } from '@/store/hooks';
-import { groupsSelector } from '@/store/todos/selectors';
-
-import useTodosPage from './useTodosPage';
-import TodosContent from '@/components/TodosContent/TodosContent';
-
+// Components
+import Modal from '@/components/Modal/Modal';
+// Hooks
+import useTodosPage from './hooks/useTodosPage';
+// Utils
+import { FILTER_OPTIONS, SORT_OPTIONS } from '@/utils/constants';
 import * as S from './style';
 
 const TodosPage: FC = () => {
-  const groups = useAppSelector(groupsSelector);
-
-  const groupTabs = [
-    {
-      key: '0',
-      label: <span>Все</span>,
-      children: <TodosContent tabId="0" />,
-    },
-    ...groups.map(({ id, color, groupTitle }, index) => {
-      return {
-        key: (index + 1).toString(),
-        label: <span style={{ color }}>{groupTitle}</span>,
-        children: <TodosContent tabId={id} />,
-      };
-    }),
-  ];
-
   const {
-    filterOptions,
     selectedFilter,
-    sortOptions,
     selectedSort,
+    groupTabs,
     groupCount,
     taskCount,
     handleChangeFilter,
     handleChangeSort,
     handleChangeGroup,
+    handleAddGroup,
   } = useTodosPage();
 
   return (
@@ -47,7 +29,7 @@ const TodosPage: FC = () => {
         <Collapse defaultActiveKey={['1', '2']} expandIconPosition="end">
           <Collapse.Panel header="Фильтр:" key="1">
             <S.RadioGroup
-              options={filterOptions}
+              options={FILTER_OPTIONS}
               value={selectedFilter}
               onChange={handleChangeFilter}
               direction="vertical"
@@ -55,7 +37,12 @@ const TodosPage: FC = () => {
           </Collapse.Panel>
 
           <Collapse.Panel header="Сортировка:" key="2">
-            <S.RadioGroup options={sortOptions} value={selectedSort} onChange={handleChangeSort} direction="vertical" />
+            <S.RadioGroup
+              options={SORT_OPTIONS}
+              value={selectedSort}
+              onChange={handleChangeSort}
+              direction="vertical"
+            />
           </Collapse.Panel>
         </Collapse>
       </S.Sidebar>
@@ -74,12 +61,7 @@ const TodosPage: FC = () => {
           />
 
           {/*** Добавить вкладку ***/}
-          <S.AddGroup
-            title="Создать группу"
-            onClick={() => {
-              console.log('add new group');
-            }}
-          >
+          <S.AddGroup title="Создать группу" onClick={handleAddGroup}>
             <PlusOutlined />
           </S.AddGroup>
         </S.TabsWrapper>
@@ -100,6 +82,9 @@ const TodosPage: FC = () => {
           {/*/>*/}
         </S.InfoBlock>
       </S.Content>
+
+      {/*** Модалка ***/}
+      <Modal />
     </S.Wrapper>
   );
 };
