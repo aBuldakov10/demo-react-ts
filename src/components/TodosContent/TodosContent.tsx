@@ -56,27 +56,6 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
               <S.GroupNoneTasks>
                 завершено {groupTasksFinished.length}/{groupTasks.length}
               </S.GroupNoneTasks>
-
-              <S.GroupAction>
-                <S.AddTask
-                  title="Создать задачу"
-                  onClick={() => {
-                    console.log(groupId, 'Создать задачу для группы');
-                  }}
-                />
-                <S.EditGroup
-                  title="Редактировать группу"
-                  onClick={() => {
-                    console.log(groupId, 'Редактировать группу для группы');
-                  }}
-                />
-                <S.DeleteGroup
-                  title="Удалить группу"
-                  onClick={() => {
-                    console.log(groupId, 'Удалить группу для группы');
-                  }}
-                />
-              </S.GroupAction>
             </S.TodosHeading>
 
             {/*** Задача ***/}

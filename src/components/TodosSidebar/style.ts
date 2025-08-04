@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
   top: 72px;
   width: 20%;
   min-width: 230px;
+
+  .ant-collapse .ant-collapse-item:last-child > .ant-collapse-content {
+    border-radius: 0px 0px 5px 5px;
+  }
 `;
 
 export const RadioGroup = styled(CustomRadio)`

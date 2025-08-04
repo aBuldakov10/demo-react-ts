@@ -33,12 +33,12 @@
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab {
   padding: 10px 15px;
   border-radius: 5px;
-  box-shadow: 0 0 8px 2px rgba(202, 202, 202, .2);
-  transition: .3s ease;
+  box-shadow: 0 0 8px 2px rgba(202, 202, 202, 0.2);
+  transition: 0.3s ease;
 }
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab span {
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:hover {
@@ -59,4 +59,10 @@
 
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active span {
   color: #ff9000;
+}
+
+/*** Popover ***/
+.todos-action .ant-popover-inner {
+  padding: 6px 0;
+  border-radius: 5px;
 }

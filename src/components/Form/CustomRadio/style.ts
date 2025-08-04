@@ -44,6 +44,7 @@ export const Wrapper = styled.div`
   &.vertical .ant-radio-group {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
   }
 

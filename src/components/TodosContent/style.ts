@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Collapse } from 'antd';
-import { DeleteOutlined, EditOutlined, FileAddOutlined } from '@ant-design/icons/lib';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons/lib';
 import CustomCheck from '../Form/CustomCheck/CustomCheck';
 import { theme } from '@/styles/theme';
 
@@ -31,30 +31,6 @@ export const GroupName = styled.h4<{ clr?: string }>`
 export const GroupNoneTasks = styled.span`
   font-size: 12px;
   line-height: 1;
-`;
-
-export const GroupAction = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-left: auto;
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-`;
-
-export const AddTask = styled(FileAddOutlined)`
-  padding: 5px;
-  color: ${theme.colors.green_600};
-  border-radius: ${theme.radius_5};
-  transition: ${theme.transition};
-
-  &:hover {
-    color: ${theme.colors.second};
-    background-color: ${theme.colors.black};
-  }
 `;
 
 export const EditGroup = styled(EditOutlined)`
@@ -106,7 +82,7 @@ export const TaskDoneCheck = styled(CustomCheck)`
 export const TaskAction = styled.div`
   position: absolute;
   top: 9px;
-  right: 60px;
+  right: 50px;
   z-index: 1;
   display: flex;
   align-items: center;

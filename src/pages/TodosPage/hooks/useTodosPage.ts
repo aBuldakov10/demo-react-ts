@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // Store
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 // import { getGroupsThunk } from '@/store/todos/thunks';
-import { openModal } from '@/store/common/reducers';
 import { selectGroup } from '@/store/todos/reducers';
 import { groupCountSelector, taskCountSelector } from '@/store/todos/selectors';
 // Hooks
@@ -13,20 +12,26 @@ const useTodosPage = () => {
   const groupCount = useAppSelector(groupCountSelector);
   const taskCount = useAppSelector(taskCountSelector);
 
+  const [actionsOpen, setActionsOpen] = useState(false);
+
   useEffect(() => {
     // dispatch(getGroupsThunk()); // получение списка групп
   }, []);
 
   /*** Handlers ***/
   const handleChangeGroup = (key: string) => dispatch(selectGroup(key));
-  const handleAddGroup = () => dispatch(openModal('AddGroupModal'));
+
+  const handleActionsOpenChange = (state: boolean) => {
+    setActionsOpen(state);
+  };
 
   return {
     groupTabs: useTodosPageTabs(),
     groupCount,
+    actionsOpen,
     taskCount,
     handleChangeGroup,
-    handleAddGroup,
+    handleActionsOpenChange,
   };
 };
 

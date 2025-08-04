@@ -18,18 +18,19 @@ export const TabsWrapper = styled.div`
   position: relative;
 
   .ant-tabs-nav {
-    width: 92%;
+    width: 85%;
   }
 `;
 
-export const AddGroup = styled.div`
+export const Actions = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 42px;
+  gap: 10px;
+  padding: 0 10px;
   height: 42px;
   border-radius: ${theme.radius_5};
   background: ${theme.colors.white};
@@ -37,9 +38,17 @@ export const AddGroup = styled.div`
   cursor: pointer;
   transition: ${theme.transition};
 
-  &:hover {
+  &:hover,
+  &.ant-popover-open {
     background: ${theme.colors.second};
-    color: ${theme.colors.text};
+  }
+
+  span {
+    transition: ${theme.transition};
+  }
+
+  &.ant-popover-open [aria-label='caret-down'] {
+    transform: rotate(180deg);
   }
 `;
 
