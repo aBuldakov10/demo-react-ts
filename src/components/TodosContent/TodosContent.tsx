@@ -1,10 +1,7 @@
 import { FC, useState } from 'react';
-import { Collapse } from 'antd';
 import { useAppSelector } from '@/store/hooks';
 import { filteredTasksSelector, groupsSelector } from '@/store/todos/selectors';
 import * as S from './style';
-
-const { Panel } = Collapse;
 
 const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
   const groups = useAppSelector(groupsSelector);
@@ -32,6 +29,23 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
         const group = groups.find(({ id }) => id === groupId); // группа текущей задачи
         const groupTasks = filteredTasks.filter(({ groupId }) => group?.id === groupId); // список задач одной группы
         const groupTasksFinished = groupTasks.filter(({ isDone }) => isDone); // список завершенных задач одной группы
+
+        const createItems = (taskTitle: string, description: string) => {
+          return [
+            {
+              key: '1',
+              label: <span>{taskTitle}</span>,
+              children: (
+                <>
+                  <S.Task value={description} cols={30} rows={5} readOnly={true} />
+
+                  {/* при изменении отображается 'изменено' и время создания */}
+                  <S.TaskEdited>изменено 12:54</S.TaskEdited>
+                </>
+              ),
+            },
+          ];
+        };
 
         return (
           <S.TodosItem key={id}>
@@ -66,7 +80,7 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
             </S.TodosHeading>
 
             {/*** Задача ***/}
-            <S.Accordion defaultActiveKey={['1']} expandIconPosition="end" bordered={false}>
+            <S.TaskWrapper>
               <S.TaskDoneCheck value={check.includes(id)} onChange={() => toggleCheck(id)} />
 
               <S.TaskAction>
@@ -85,13 +99,13 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
                 />
               </S.TaskAction>
 
-              <Panel className="task" header={taskTitle} key={id}>
-                <S.Task value={description} cols={30} rows={5} readOnly={true} />
-
-                {/* при изменении отображается 'изменено' и время создания */}
-                <S.TaskEdited>изменено 12:54</S.TaskEdited>
-              </Panel>
-            </S.Accordion>
+              <S.Accordion
+                rootClassName="task"
+                items={createItems(taskTitle, description)}
+                expandIconPosition="end"
+                bordered={false}
+              />
+            </S.TaskWrapper>
           </S.TodosItem>
         );
       })}

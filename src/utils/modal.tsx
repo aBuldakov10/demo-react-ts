@@ -13,6 +13,6 @@ export const MODAL_CONFIG = {
   centered: true,
   width: 'fit-content',
   footer: null,
-  destroyOnClose: true,
-  maskStyle: { backdropFilter: 'blur(2px)' },
+  destroyOnHidden: true,
+  styles: { mask: { backdropFilter: 'blur(1px)' } },
 };

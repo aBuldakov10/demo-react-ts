@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { DeleteOutlined } from '@ant-design/icons/lib';
-import CustomRadio from '../../components/Form/CustomRadio/CustomRadio';
-import { theme } from '../../styles/theme';
+import { theme } from '@/styles/theme';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -10,19 +9,9 @@ export const Wrapper = styled.div`
   height: 100%;
 `;
 
-export const Sidebar = styled.div`
-  position: sticky;
-  top: 72px;
-  width: 20%;
-`;
-
-export const RadioGroup = styled(CustomRadio)`
-  margin-left: 10px;
-`;
-
 export const Content = styled.div`
   flex-grow: 1;
-  width: 80%;
+  width: calc(100% - 280px);
 `;
 
 export const TabsWrapper = styled.div`

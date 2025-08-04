@@ -1,51 +1,21 @@
 import { FC } from 'react';
-import { Collapse, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // Components
 import Modal from '@/components/Modal/Modal';
+import TodosSidebar from '@/components/TodosSidebar/TodosSidebar';
 // Hooks
 import useTodosPage from './hooks/useTodosPage';
 // Utils
-import { FILTER_OPTIONS, SORT_OPTIONS } from '@/utils/constants';
 import * as S from './style';
 
 const TodosPage: FC = () => {
-  const {
-    selectedFilter,
-    selectedSort,
-    groupTabs,
-    groupCount,
-    taskCount,
-    handleChangeFilter,
-    handleChangeSort,
-    handleChangeGroup,
-    handleAddGroup,
-  } = useTodosPage();
+  const { groupTabs, groupCount, taskCount, handleChangeGroup, handleAddGroup } = useTodosPage();
 
   return (
     <S.Wrapper>
       {/*** Сайдбар ***/}
-      <S.Sidebar>
-        <Collapse defaultActiveKey={['1', '2']} expandIconPosition="end">
-          <Collapse.Panel header="Фильтр:" key="1">
-            <S.RadioGroup
-              options={FILTER_OPTIONS}
-              value={selectedFilter}
-              onChange={handleChangeFilter}
-              direction="vertical"
-            />
-          </Collapse.Panel>
-
-          <Collapse.Panel header="Сортировка:" key="2">
-            <S.RadioGroup
-              options={SORT_OPTIONS}
-              value={selectedSort}
-              onChange={handleChangeSort}
-              direction="vertical"
-            />
-          </Collapse.Panel>
-        </Collapse>
-      </S.Sidebar>
+      <TodosSidebar />
 
       <S.Content>
         <h1>Список дел</h1>
@@ -56,7 +26,7 @@ const TodosPage: FC = () => {
             defaultActiveKey="0"
             type="card"
             items={groupTabs}
-            destroyInactiveTabPane={true}
+            destroyOnHidden={true}
             onChange={handleChangeGroup}
           />
 

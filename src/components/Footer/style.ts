@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { theme } from '../../styles/theme';
+import { theme } from '@/styles/theme';
 
 export const Footer = styled.footer`
   padding: 30px 0;

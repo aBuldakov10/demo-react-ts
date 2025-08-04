@@ -16,6 +16,6 @@ export const message = ({ title, description, type = 'info', duration }: Message
     description,
     className: 'custom-notification',
     duration,
-    onClick: () => notification.close(key),
+    onClick: () => notification.destroy(key),
   });
 };

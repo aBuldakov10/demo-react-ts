@@ -8,7 +8,7 @@ import App from './App';
 // Fonts
 import './assets/fonts/fonts.css';
 // Styles
-import 'antd/dist/antd.min.css';
+import 'antd/dist/reset.css';
 import './styles/ant-redefine.css';
 import { theme } from './styles/theme';
 import GlobalStyles from './styles/global';

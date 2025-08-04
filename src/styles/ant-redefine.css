@@ -1,5 +1,12 @@
+/*** Collapse ***/
+.ant-collapse {
+  font-family: inherit;
+  border-radius: 5px;
+}
+
 /*** Tabs ***/
 .ant-tabs {
+  font-family: inherit;
   color: #242424;
 }
 

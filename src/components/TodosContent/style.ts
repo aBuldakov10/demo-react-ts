@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Collapse } from 'antd';
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from '@ant-design/icons/lib';
-import { theme } from '../../styles/theme';
 import CustomCheck from '../Form/CustomCheck/CustomCheck';
+import { theme } from '@/styles/theme';
 
 export const Wrapper = styled.div`
   padding-top: 10px;
@@ -90,6 +90,10 @@ export const Accordion = styled(Collapse)`
     padding-right: 275px;
     padding-left: 50px;
   }
+`;
+
+export const TaskWrapper = styled.div`
+  position: relative;
 `;
 
 export const TaskDoneCheck = styled(CustomCheck)`

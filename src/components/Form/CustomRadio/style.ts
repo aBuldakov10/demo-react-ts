@@ -1,9 +1,13 @@
 import styled from 'styled-components';
-import { theme } from '../../../styles/theme';
+import { theme } from '@/styles/theme';
 
 export const Wrapper = styled.div`
   .ant-radio-wrapper {
     align-items: center;
+
+    &:hover .ant-radio-inner {
+      border-color: ${theme.colors.main};
+    }
   }
 
   .ant-radio {
@@ -28,6 +32,7 @@ export const Wrapper = styled.div`
 
     .ant-radio-inner {
       border-color: ${theme.colors.main};
+      background-color: ${theme.colors.transparent};
 
       &:after {
         transform: scale(0.7);
