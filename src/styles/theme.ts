@@ -1,6 +1,5 @@
 export const theme = {
   colors: {
-    transparent: 'transparent',
     black: '#000',
     white: '#fff',
     main: '#242424',
@@ -14,6 +13,7 @@ export const theme = {
     green_600: '#52c41a',
     red_600: '#f5222d',
     blue_600: '#1890ff',
+    transparent: 'transparent',
   },
   border_1: '1px solid #d3d3d3',
   border_2: '2px solid #d3d3d3',
@@ -21,4 +21,7 @@ export const theme = {
   radius_5: '5px',
   radius_2: '2px',
   transition: '.3s ease',
+  breakpoints: {
+    hover: '(any-hover: hover)',
+  },
 };

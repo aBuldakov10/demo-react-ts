@@ -1,8 +1,18 @@
 // список групп
-export type GroupsType = { id: string; groupTitle: string; color: string };
+export interface GroupsType {
+  id: string;
+  groupTitle: string;
+  color: string;
+}
+
+// добавление группы
+export interface AddGroup {
+  groupTitle: string;
+  color: string;
+}
 
 // список задач
-export type TaskType = {
+export interface TaskType {
   id: string;
   taskTitle: string;
   description: string;
@@ -11,4 +21,4 @@ export type TaskType = {
   isEdited: boolean;
   isDone: boolean;
   groupId: string;
-};
+}

@@ -1,7 +1,44 @@
 import { FC } from 'react';
+import useAddGroupModal from './useAddGroupModal';
+import * as S from './style';
 
 const AddGroupModal: FC = () => {
-  return <div>контент для добавления группы</div>;
+  const { groupName, errorMsg, format, setFormat, color, setColor, props, handleChangeGroupName, handleSubmit } =
+    useAddGroupModal();
+
+  return (
+    <S.Wrapper>
+      <S.FormGroup>
+        <S.Label htmlFor="group-name">
+          Название группы <span style={{ color: 'red' }}>*</span>
+        </S.Label>
+        <S.Input
+          id="group-name"
+          type="text"
+          value={groupName}
+          onChange={handleChangeGroupName}
+          placeholder="Название групы"
+          isError={!!errorMsg}
+        />
+        {errorMsg && <S.Error>{errorMsg}</S.Error>}
+      </S.FormGroup>
+
+      <S.FormGroup>
+        <S.Title>Цвет</S.Title>
+        <S.Color
+          format={format}
+          value={color}
+          onChange={setColor}
+          onFormatChange={setFormat}
+          size="large"
+          showText
+          {...props}
+        />
+      </S.FormGroup>
+
+      <S.Submit onClick={handleSubmit}>Добавить</S.Submit>
+    </S.Wrapper>
+  );
 };
 
 export default AddGroupModal;
