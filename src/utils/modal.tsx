@@ -1,11 +1,14 @@
 import AddGroupModal from '@/components/Modal/Content/AddGroupModal/AddGroupModal';
+import EditGroupModal from '@/components/Modal/Content/EditGroupModal/EditGroupModal';
 
 export const MODAL_TITLE = {
   AddGroupModal: 'Добавить группу',
+  EditGroupModal: 'Редактирование группы',
 };
 
 export const MODAL_CONTENT = {
   AddGroupModal: <AddGroupModal />,
+  EditGroupModal: <EditGroupModal />,
 };
 
 export const MODAL_CONFIG = {

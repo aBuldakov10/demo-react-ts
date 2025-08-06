@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addGroupThunk, getGroupsThunk } from './thunks';
+import { addGroupThunk, editGroupThunk, getGroupsThunk } from './thunks';
 import { GroupsType, TaskType } from '@/types/todos';
 
 interface Todos {
@@ -270,6 +270,14 @@ const todos = createSlice({
         state.groupCount = payload?.length;
       })
       .addCase(addGroupThunk.rejected, () => {});
+
+    // редактирование группы
+    builder
+      .addCase(editGroupThunk.pending, () => {})
+      .addCase(editGroupThunk.fulfilled, (state, { payload }) => {
+        state.groups = payload;
+      })
+      .addCase(editGroupThunk.rejected, () => {});
   },
 });
 

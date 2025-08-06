@@ -1,31 +1,21 @@
 import { ChangeEvent, useMemo, useState } from 'react';
-import { ColorPickerProps, GetProp } from 'antd';
 import { useAppDispatch } from '@/store/hooks';
 import { addGroupThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
 import { theme } from '@/styles/theme';
-
-type Color = Extract<GetProp<ColorPickerProps, 'value'>, string | { cleared: any }>;
-type Format = GetProp<ColorPickerProps, 'format'>;
+import { Color, Format } from '@/types/common';
+import { setColorPackerWidth } from '@/utils/functions';
 
 const useAddGroupModal = () => {
   const dispatch = useAppDispatch();
 
   const [groupName, setGroupName] = useState('');
-  const [color, setColor] = useState<Color>(theme.colors.main);
-  const [format, setFormat] = useState<Format | undefined>('hex');
   const [errorMsg, setErrorMsg] = useState('');
-
-  // функция установления ширины в зависимости от формата
-  const setWidth = (format: Format | undefined) => {
-    if (format === 'hsb') return colorStr.length === 7 ? '210px' : '260px';
-    if (format === 'rgb') return colorStr.length === 7 ? '180px' : '225px';
-
-    return colorStr.length === 7 ? '130px' : '165px'; // hex
-  };
+  const [format, setFormat] = useState<Format | undefined>('hex');
+  const [color, setColor] = useState<Color>(theme.colors.main);
 
   const colorStr = useMemo<string>(() => (typeof color === 'string' ? color : color?.toHexString()), [color]);
-  const props = useMemo(() => ({ clr: colorStr, w: setWidth(format) }), [color, format]);
+  const props = useMemo(() => ({ clr: colorStr, w: setColorPackerWidth(format, colorStr) }), [color, format]);
 
   /*** Handlers ***/
   const handleChangeGroupName = (e: ChangeEvent<HTMLInputElement>) => {

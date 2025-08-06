@@ -22,7 +22,7 @@ const TodosActionList: FC<TodosActionList> = ({ onClose }) => {
   };
 
   const handleEditGroup = () => {
-    console.log('Редактировать группу');
+    dispatch(openModal('EditGroupModal'));
     onClose();
   };
 

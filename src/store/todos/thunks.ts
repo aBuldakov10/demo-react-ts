@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/utils/api';
-import { AddGroup, GroupsType } from '@/types/todos';
+import { GroupsType, AddGroup, EditGroup } from '@/types/todos';
 
 // получение списка групп
 export const getGroupsThunk = createAsyncThunk<GroupsType[]>(
@@ -12,4 +12,10 @@ export const getGroupsThunk = createAsyncThunk<GroupsType[]>(
 export const addGroupThunk = createAsyncThunk<GroupsType[], AddGroup>(
   'todos/addGroupThunk',
   async (body) => await api.post('/groups', body)
+);
+
+// редактирование группы
+export const editGroupThunk = createAsyncThunk<GroupsType[], EditGroup>(
+  'todos/editGroupThunk',
+  async ({ id, data }) => await api.patch(`/groups/${id}`, data)
 );

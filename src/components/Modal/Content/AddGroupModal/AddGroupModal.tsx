@@ -17,7 +17,7 @@ const AddGroupModal: FC = () => {
           type="text"
           value={groupName}
           onChange={handleChangeGroupName}
-          placeholder="Название групы"
+          placeholder="Название группы"
           isError={!!errorMsg}
         />
         {errorMsg && <S.Error>{errorMsg}</S.Error>}

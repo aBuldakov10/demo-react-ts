@@ -66,3 +66,25 @@
   padding: 6px 0;
   border-radius: 5px;
 }
+
+/*** Select ***/
+.ant-select-dropdown {
+  border-radius: 5px;
+}
+
+.ant-select-dropdown .ant-select-item-option .ant-select-item-option-content span {
+  transition: color 0.3s ease;
+}
+
+.ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  color: #242424;
+  background-color: #ff9000;
+  border-radius: 5px;
+}
+
+.ant-select-dropdown
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled)
+  .ant-select-item-option-content
+  span {
+  color: #242424;
+}

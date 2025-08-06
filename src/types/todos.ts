@@ -11,6 +11,12 @@ export interface AddGroup {
   color: string;
 }
 
+// редактирование группы
+export interface EditGroup {
+  id: string;
+  data: AddGroup;
+}
+
 // список задач
 export interface TaskType {
   id: string;
