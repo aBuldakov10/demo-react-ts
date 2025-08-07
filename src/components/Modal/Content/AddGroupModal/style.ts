@@ -19,6 +19,10 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   display: inline-block;
   margin-bottom: 5px;
+
+  span {
+    color: ${theme.colors.red_600};
+  }
 `;
 
 export const Input = styled.input<{ isError: boolean }>`
@@ -92,8 +96,8 @@ export const Submit = styled.button`
   margin-left: auto;
   padding: 10px 15px;
   width: 120px;
-  color: ${theme.colors.second};
-  background: ${theme.colors.main};
+  color: ${theme.colors.white};
+  background: ${theme.colors.green_600};
   border: 0;
   border-radius: ${theme.radius_5};
   transition: ${theme.transition};

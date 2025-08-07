@@ -5,6 +5,20 @@ import TodosContent from '@/components/TodosContent/TodosContent';
 const useTodosPageTabs = () => {
   const groups = useAppSelector(groupsSelector);
 
+  // есть баг с активной группой после удаления этой группы.
+  // воспроизведение: выбрать вкладку, удалить группу из выбранной вкладки - в store останется id выбранной группы
+  // понятней будет после того как будут готовы задачи
+
+  if (groups.length < 2) {
+    return groups?.map(({ id, color, groupTitle }, index) => {
+      return {
+        key: (index + 1).toString(),
+        label: <span style={{ color }}>{groupTitle}</span>,
+        children: <TodosContent tabId={id} />,
+      };
+    });
+  }
+
   return [
     {
       key: '0',

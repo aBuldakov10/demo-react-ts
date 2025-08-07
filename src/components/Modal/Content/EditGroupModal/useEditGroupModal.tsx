@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentRef, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, ComponentRef, useEffect, useMemo, useRef, useState } from 'react';
 import { Select } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { editGroupThunk } from '@/store/todos/thunks';
@@ -28,6 +28,14 @@ const useEditGroupModal = () => {
   const colorStr = useMemo<string>(() => (typeof color === 'string' ? color : color?.toHexString()), [color]);
   const props = useMemo(() => ({ clr: colorStr, w: setColorPackerWidth(format, colorStr) }), [color, format]);
 
+  useEffect(() => {
+    if (groups.length === 1) {
+      setSelectedGroup(groups[0].id);
+      setGroupName(groups[0].groupTitle);
+      setColor(groups[0].color);
+    }
+  }, []);
+
   /*** Handlers ***/
   const handleChangeGroup = (value: unknown) => {
     const groupObj = groups.find(({ id }) => id === value)!;
@@ -55,9 +63,10 @@ const useEditGroupModal = () => {
   };
 
   return {
+    manyGroups: groups.length > 1,
+    isEditForm: (groups.length > 1 && selectedGroup) || groups.length === 1,
     selectRef,
     options,
-    selectedGroup,
     groupName,
     errorMsg,
     format,

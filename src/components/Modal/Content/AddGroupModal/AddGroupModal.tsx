@@ -3,17 +3,28 @@ import useAddGroupModal from './useAddGroupModal';
 import * as S from './style';
 
 const AddGroupModal: FC = () => {
-  const { groupName, errorMsg, format, setFormat, color, setColor, props, handleChangeGroupName, handleSubmit } =
-    useAddGroupModal();
+  const {
+    inputRef,
+    groupName,
+    errorMsg,
+    format,
+    setFormat,
+    color,
+    setColor,
+    props,
+    handleChangeGroupName,
+    handleSubmit,
+  } = useAddGroupModal();
 
   return (
     <S.Wrapper>
       <S.FormGroup>
         <S.Label htmlFor="group-name">
-          Название группы <span style={{ color: 'red' }}>*</span>
+          Название группы <span>*</span>
         </S.Label>
         <S.Input
           id="group-name"
+          ref={inputRef}
           type="text"
           value={groupName}
           onChange={handleChangeGroupName}

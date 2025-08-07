@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import { addGroupThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
@@ -14,8 +14,14 @@ const useAddGroupModal = () => {
   const [format, setFormat] = useState<Format | undefined>('hex');
   const [color, setColor] = useState<Color>(theme.colors.main);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const colorStr = useMemo<string>(() => (typeof color === 'string' ? color : color?.toHexString()), [color]);
   const props = useMemo(() => ({ clr: colorStr, w: setColorPackerWidth(format, colorStr) }), [color, format]);
+
+  useEffect(() => {
+    inputRef.current && inputRef.current.focus();
+  }, []);
 
   /*** Handlers ***/
   const handleChangeGroupName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +39,18 @@ const useAddGroupModal = () => {
     dispatch(closeModal());
   };
 
-  return { groupName, errorMsg, format, setFormat, color, setColor, props, handleChangeGroupName, handleSubmit };
+  return {
+    inputRef,
+    groupName,
+    errorMsg,
+    format,
+    setFormat,
+    color,
+    setColor,
+    props,
+    handleChangeGroupName,
+    handleSubmit,
+  };
 };
 
 export default useAddGroupModal;

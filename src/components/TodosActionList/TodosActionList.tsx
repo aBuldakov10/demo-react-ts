@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { DeleteOutlined, EditOutlined, FileAddOutlined, FolderAddOutlined } from '@ant-design/icons';
-import { useAppDispatch } from '@/store/hooks';
-import { openModal } from '@/store/common/reducers';
+import useTodosActionList from './useTodosActionList';
 import * as S from './style';
 
 interface TodosActionList {
@@ -9,31 +8,11 @@ interface TodosActionList {
 }
 
 const TodosActionList: FC<TodosActionList> = ({ onClose }) => {
-  const dispatch = useAppDispatch();
-
-  const handleAddTask = () => {
-    console.log('Добавить задачу');
-    onClose();
-  };
-
-  const handleAddGroup = () => {
-    dispatch(openModal('AddGroupModal'));
-    onClose();
-  };
-
-  const handleEditGroup = () => {
-    dispatch(openModal('EditGroupModal'));
-    onClose();
-  };
-
-  const handleDeleteGroup = () => {
-    console.log('Удалить группу');
-    onClose();
-  };
+  const { noGroups, handleAddTask, handleAddGroup, handleEditGroup, handleDeleteGroup } = useTodosActionList(onClose);
 
   return (
-    <div>
-      <S.ListItem onClick={handleAddTask}>
+    <S.Wrapper>
+      <S.ListItem disabled={noGroups} onClick={handleAddTask}>
         <FileAddOutlined /> Добавить задачу
       </S.ListItem>
 
@@ -43,14 +22,14 @@ const TodosActionList: FC<TodosActionList> = ({ onClose }) => {
         <FolderAddOutlined /> Добавить группу
       </S.ListItem>
 
-      <S.ListItem onClick={handleEditGroup}>
+      <S.ListItem disabled={noGroups} onClick={handleEditGroup}>
         <EditOutlined /> Редактировать группу
       </S.ListItem>
 
-      <S.ListItem onClick={handleDeleteGroup}>
+      <S.ListItem disabled={noGroups} onClick={handleDeleteGroup}>
         <DeleteOutlined /> Удалить группу
       </S.ListItem>
-    </div>
+    </S.Wrapper>
   );
 };
 

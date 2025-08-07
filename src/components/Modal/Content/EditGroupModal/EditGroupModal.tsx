@@ -4,9 +4,10 @@ import * as S from './style';
 
 const EditGroupModal: FC = () => {
   const {
+    manyGroups,
+    isEditForm,
     selectRef,
     options,
-    selectedGroup,
     groupName,
     errorMsg,
     format,
@@ -21,17 +22,19 @@ const EditGroupModal: FC = () => {
 
   return (
     <S.Wrapper>
-      <S.FormGroup>
-        <S.Title>Группа</S.Title>
-        <S.SelectGroup
-          ref={selectRef}
-          options={options}
-          onChange={handleChangeGroup}
-          placeholder="Выберите группу для редактирования"
-        />
-      </S.FormGroup>
+      {manyGroups && (
+        <S.FormGroup>
+          <S.Title>Группа</S.Title>
+          <S.SelectGroup
+            ref={selectRef}
+            options={options}
+            onChange={handleChangeGroup}
+            placeholder="Выберите группу для редактирования"
+          />
+        </S.FormGroup>
+      )}
 
-      {selectedGroup && (
+      {isEditForm && (
         <>
           <S.FormGroup>
             <S.Label htmlFor="group-name">

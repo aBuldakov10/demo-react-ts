@@ -19,6 +19,7 @@ export const TabsWrapper = styled.div`
 
   .ant-tabs-nav {
     width: 85%;
+    min-height: 62px;
   }
 `;
 
