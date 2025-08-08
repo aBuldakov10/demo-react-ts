@@ -38,7 +38,7 @@ const EditGroupModal: FC = () => {
         <>
           <S.FormGroup>
             <S.Label htmlFor="group-name">
-              Название группы <span style={{ color: 'red' }}>*</span>
+              Название группы <span>*</span>
             </S.Label>
             <S.Input
               id="group-name"

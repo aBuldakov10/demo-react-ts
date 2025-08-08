@@ -1,3 +1,4 @@
+import AddTaskModal from '@/components/Modal/Content/AddTaskModal/AddTaskModal';
 import AddGroupModal from '@/components/Modal/Content/AddGroupModal/AddGroupModal';
 import EditGroupModal from '@/components/Modal/Content/EditGroupModal/EditGroupModal';
 import DeleteGroupModal from '@/components/Modal/Content/DeleteGroupModal/DeleteGroupModal';
@@ -6,12 +7,14 @@ export const MODAL_TITLE = {
   AddGroupModal: 'Добавить группу',
   EditGroupModal: 'Редактирование группы',
   DeleteGroupModal: 'Удаление группы',
+  AddTaskModal: 'Добавить задачу',
 };
 
 export const MODAL_CONTENT = {
   AddGroupModal: <AddGroupModal />,
   EditGroupModal: <EditGroupModal />,
   DeleteGroupModal: <DeleteGroupModal />,
+  AddTaskModal: <AddTaskModal />,
 };
 
 export const MODAL_CONFIG = {

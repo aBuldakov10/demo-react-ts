@@ -1,27 +1,39 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '@/utils/api';
-import { GroupsType, AddGroup, EditGroup } from '@/types/todos';
+import { GroupType, AddGroupType, EditGroupType, TaskType, AddTaskType } from '@/types/todos';
 
 // получение списка групп
-export const getGroupsThunk = createAsyncThunk<GroupsType[]>(
+export const getGroupsThunk = createAsyncThunk<GroupType[]>(
   'todos/getGroupsThunk',
   async () => await api.get('/group/list')
 );
 
 // добавление группы
-export const addGroupThunk = createAsyncThunk<GroupsType[], AddGroup>(
+export const addGroupThunk = createAsyncThunk<GroupType[], AddGroupType>(
   'todos/addGroupThunk',
   async (body) => await api.post('/group', body)
 );
 
 // редактирование группы
-export const editGroupThunk = createAsyncThunk<GroupsType[], EditGroup>(
+export const editGroupThunk = createAsyncThunk<GroupType[], EditGroupType>(
   'todos/editGroupThunk',
   async ({ id, data }) => await api.patch(`/group/${id}`, data)
 );
 
 // удаление групп
-export const deleteGroupThunk = createAsyncThunk<GroupsType[], string[]>(
+export const deleteGroupThunk = createAsyncThunk<GroupType[], string[]>(
   'todos/deleteGroupsThunk',
   async (data) => await api.delete('/group', { data })
+);
+
+// получение списка задач
+export const getTasksThunk = createAsyncThunk<TaskType[]>(
+  'todos/getTasksThunk',
+  async () => await api.get('/task/list')
+);
+
+// добавление задачи
+export const addTaskThunk = createAsyncThunk<TaskType[], AddTaskType>(
+  'todos/addTaskThunk',
+  async (body) => await api.post('/task', body)
 );

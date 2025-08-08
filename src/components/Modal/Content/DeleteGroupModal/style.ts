@@ -24,12 +24,9 @@ export const Title = styled.span`
 export const SelectGroup = styled(Select)`
   width: 100%;
 
-  .ant-select-selector {
-    transition: ${theme.transition};
-  }
-
   &:not(.ant-select-customize-input) .ant-select-selector {
     border: ${theme.border_1};
+    transition: ${theme.transition};
   }
 
   .ant-select-selector {

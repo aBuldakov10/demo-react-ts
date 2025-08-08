@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 // Store
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-// import { getGroupsThunk } from '@/store/todos/thunks';
+import { getGroupsThunk, getTasksThunk } from '@/store/todos/thunks';
 import { selectGroup } from '@/store/todos/reducers';
 import { groupCountSelector, taskCountSelector } from '@/store/todos/selectors';
 // Hooks
@@ -15,7 +15,8 @@ const useTodosPage = () => {
   const [actionsOpen, setActionsOpen] = useState(false);
 
   useEffect(() => {
-    // dispatch(getGroupsThunk()); // получение списка групп
+    dispatch(getGroupsThunk()); // получение списка групп
+    dispatch(getTasksThunk()); // получение списка задач
   }, []);
 
   /*** Handlers ***/

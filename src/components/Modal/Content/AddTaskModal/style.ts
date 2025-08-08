@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { ColorPicker, Select } from 'antd';
 import { theme } from '@/styles/theme';
+import { Select } from 'antd';
 
 export const Wrapper = styled.div`
   padding-top: 8px;
@@ -19,6 +19,10 @@ export const FormGroup = styled.div`
 export const Title = styled.span`
   display: block;
   margin-bottom: 5px;
+
+  span {
+    color: ${theme.colors.red_600};
+  }
 `;
 
 export const SelectGroup = styled(Select)`
@@ -50,6 +54,10 @@ export const SelectGroup = styled(Select)`
       transform: rotate(180deg);
       color: ${theme.colors.main};
     }
+  }
+
+  &.ant-select-status-error:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: ${theme.colors.red_600};
   }
 
   @media ${theme.breakpoints.hover} {
@@ -107,34 +115,25 @@ export const Error = styled.span`
   color: ${theme.colors.red_600};
 `;
 
-export const Color = styled(ColorPicker)<{ clr: string; w: string }>`
-  justify-content: flex-start;
-  padding: 4px;
-  border-color: ${theme.colors.border};
-  transition: border-color ${theme.transition};
+export const Textarea = styled.textarea<{ isError: boolean }>`
+  display: block;
+  padding: 10px 15px;
+  width: 100%;
+  border: ${theme.border_1};
+  border-color: ${({ isError }) => (isError ? `${theme.colors.red_600}` : '')};
+  border-radius: ${theme.radius_5};
+  line-height: 1.2;
+  transition: ${theme.transition};
+  resize: none;
+  outline: none;
 
-  &.ant-color-picker-trigger {
-    min-width: ${({ w }) => w};
-    border-radius: ${theme.radius_5};
-
-    .ant-color-picker-color-block {
-      border-radius: ${theme.radius_5};
-    }
-
-    .ant-color-picker-color-block-inner {
-      border: ${theme.border_1};
-      box-shadow: none;
-    }
-  }
-
-  &.ant-color-picker-trigger-active {
-    box-shadow: none;
-    border-color: ${({ clr }) => clr};
+  &:focus {
+    border-color: ${({ isError }) => (isError ? `${theme.colors.red_600}` : `${theme.colors.main}`)};
   }
 
   @media ${theme.breakpoints.hover} {
     &:hover {
-      border-color: ${({ clr }) => clr};
+      border-color: ${({ isError }) => (isError ? `${theme.colors.red_600}` : `${theme.colors.main}`)};
     }
   }
 `;
@@ -145,7 +144,7 @@ export const Submit = styled.button`
   padding: 10px 15px;
   width: 120px;
   color: ${theme.colors.white};
-  background: ${theme.colors.blue_600};
+  background: ${theme.colors.green_600};
   border: 0;
   border-radius: ${theme.radius_5};
   transition: ${theme.transition};

@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addGroupThunk, deleteGroupThunk, editGroupThunk, getGroupsThunk } from './thunks';
-import { GroupsType, TaskType } from '@/types/todos';
+import { addGroupThunk, addTaskThunk, deleteGroupThunk, editGroupThunk, getGroupsThunk, getTasksThunk } from './thunks';
+import { GroupType, TaskType } from '@/types/todos';
+import { formatFromUTC } from '@/utils/functions';
 
 interface Todos {
-  groups: GroupsType[];
+  groups: GroupType[];
   selectedGroupId: string | null;
   tasks: TaskType[];
   filteredTasks: TaskType[];
@@ -31,8 +32,8 @@ const initialState: Todos = {
       id: 'a001142e-16aa-4593-81d1-79a5c3e3716c',
       taskTitle: 'task 11',
       description: 'description 11',
-      createData: '12/12/1212',
-      createTime: '10.52',
+      createDate: '12/12/1212',
+      editDate: '10.52',
       isEdited: false,
       isDone: false,
       groupId: 'c5f7385d-7ffd-46de-bd88-0839feb0989a',
@@ -41,8 +42,8 @@ const initialState: Todos = {
       id: 'd72a4109-5b8e-421a-94c5-027f5ade8ec5',
       taskTitle: 'task 22',
       description: 'description 22',
-      createData: '12/12/1212',
-      createTime: '11.52',
+      createDate: '12/12/1212',
+      editDate: '11.52',
       isEdited: true,
       isDone: false,
       groupId: 'c5f7385d-7ffd-46de-bd88-0839feb0989a',
@@ -51,8 +52,8 @@ const initialState: Todos = {
       id: 'cc5a6b38-a4db-40b7-9498-1c668aeff545',
       taskTitle: 'task 33',
       description: 'description 33',
-      createData: '12/12/1212',
-      createTime: '12.52',
+      createDate: '12/12/1212',
+      editDate: '12.52',
       isEdited: false,
       isDone: true,
       groupId: '8f2b59c9-3939-4634-bbc1-473101ed89dc',
@@ -61,8 +62,8 @@ const initialState: Todos = {
       id: '7e698821-8606-45af-84f0-26c70c2b580f',
       taskTitle: 'task 44',
       description: 'description 44',
-      createData: '12/12/1212',
-      createTime: '13.52',
+      createDate: '12/12/1212',
+      editDate: '13.52',
       isEdited: true,
       isDone: true,
       groupId: '8f2b59c9-3939-4634-bbc1-473101ed89dc',
@@ -71,8 +72,8 @@ const initialState: Todos = {
       id: '1fa24c94-e984-41f1-94c3-6d17bfb490d0',
       taskTitle: 'task 55',
       description: 'description 55',
-      createData: '12/12/1212',
-      createTime: '14.52',
+      createDate: '12/12/1212',
+      editDate: '14.52',
       isEdited: false,
       isDone: false,
       groupId: '7b5b3506-f7b9-4836-ba2a-aae695eb87db',
@@ -81,8 +82,8 @@ const initialState: Todos = {
       id: '814b6db8-7439-44e3-a968-ebd01b7a280d',
       taskTitle: 'task 66',
       description: 'description 66',
-      createData: '12/12/1212',
-      createTime: '15.52',
+      createDate: '12/12/1212',
+      editDate: '15.52',
       isEdited: false,
       isDone: true,
       groupId: '7b5b3506-f7b9-4836-ba2a-aae695eb87db',
@@ -91,8 +92,8 @@ const initialState: Todos = {
       id: '48b4e1db-84d3-4f95-b30a-570c17040025',
       taskTitle: 'task 77',
       description: 'description 77',
-      createData: '12/12/1212',
-      createTime: '16.52',
+      createDate: '12/12/1212',
+      editDate: '16.52',
       isEdited: false,
       isDone: false,
       groupId: '2d373765-d9c7-4415-b664-689e6d0b6bb7',
@@ -101,8 +102,8 @@ const initialState: Todos = {
       id: '23af2cf1-3546-47b9-bb01-99e51217e817',
       taskTitle: 'task 88',
       description: 'description 88',
-      createData: '12/12/1212',
-      createTime: '17.52',
+      createDate: '12/12/1212',
+      editDate: '17.52',
       isEdited: true,
       isDone: false,
       groupId: '2d373765-d9c7-4415-b664-689e6d0b6bb7',
@@ -111,8 +112,8 @@ const initialState: Todos = {
       id: '475163f2-cb66-4aa3-9689-736ba0a2fadc',
       taskTitle: 'task 99',
       description: 'description 99',
-      createData: '12/12/1212',
-      createTime: '18.52',
+      createDate: '12/12/1212',
+      editDate: '18.52',
       isEdited: false,
       isDone: false,
       groupId: 'e65e626c-cb2b-497c-a3f6-24dd80476366',
@@ -121,8 +122,8 @@ const initialState: Todos = {
       id: '7b0f350c-8656-4ae8-b504-73a9e4b98925',
       taskTitle: 'task 100',
       description: 'description 100',
-      createData: '12/12/1212',
-      createTime: '19.52',
+      createDate: '12/12/1212',
+      editDate: '19.52',
       isEdited: true,
       isDone: true,
       groupId: 'e65e626c-cb2b-497c-a3f6-24dd80476366',
@@ -133,8 +134,8 @@ const initialState: Todos = {
       id: 'a001142e-16aa-4593-81d1-79a5c3e3716c',
       taskTitle: 'task 11',
       description: 'description 11',
-      createData: '12/12/1212',
-      createTime: '10.52',
+      createDate: '12/12/1212',
+      editDate: '10.52',
       isEdited: false,
       isDone: false,
       groupId: 'c5f7385d-7ffd-46de-bd88-0839feb0989a',
@@ -143,8 +144,8 @@ const initialState: Todos = {
       id: 'd72a4109-5b8e-421a-94c5-027f5ade8ec5',
       taskTitle: 'task 22',
       description: 'description 22',
-      createData: '12/12/1212',
-      createTime: '11.52',
+      createDate: '12/12/1212',
+      editDate: '11.52',
       isEdited: true,
       isDone: false,
       groupId: 'c5f7385d-7ffd-46de-bd88-0839feb0989a',
@@ -153,8 +154,8 @@ const initialState: Todos = {
       id: 'cc5a6b38-a4db-40b7-9498-1c668aeff545',
       taskTitle: 'task 33',
       description: 'description 33',
-      createData: '12/12/1212',
-      createTime: '12.52',
+      createDate: '12/12/1212',
+      editDate: '12.52',
       isEdited: false,
       isDone: true,
       groupId: '8f2b59c9-3939-4634-bbc1-473101ed89dc',
@@ -163,8 +164,8 @@ const initialState: Todos = {
       id: '7e698821-8606-45af-84f0-26c70c2b580f',
       taskTitle: 'task 44',
       description: 'description 44',
-      createData: '12/12/1212',
-      createTime: '13.52',
+      createDate: '12/12/1212',
+      editDate: '13.52',
       isEdited: true,
       isDone: true,
       groupId: '8f2b59c9-3939-4634-bbc1-473101ed89dc',
@@ -173,8 +174,8 @@ const initialState: Todos = {
       id: '1fa24c94-e984-41f1-94c3-6d17bfb490d0',
       taskTitle: 'task 55',
       description: 'description 55',
-      createData: '12/12/1212',
-      createTime: '14.52',
+      createDate: '12/12/1212',
+      editDate: '14.52',
       isEdited: false,
       isDone: false,
       groupId: '7b5b3506-f7b9-4836-ba2a-aae695eb87db',
@@ -183,8 +184,8 @@ const initialState: Todos = {
       id: '814b6db8-7439-44e3-a968-ebd01b7a280d',
       taskTitle: 'task 66',
       description: 'description 66',
-      createData: '12/12/1212',
-      createTime: '15.52',
+      createDate: '12/12/1212',
+      editDate: '15.52',
       isEdited: false,
       isDone: true,
       groupId: '7b5b3506-f7b9-4836-ba2a-aae695eb87db',
@@ -193,8 +194,8 @@ const initialState: Todos = {
       id: '48b4e1db-84d3-4f95-b30a-570c17040025',
       taskTitle: 'task 77',
       description: 'description 77',
-      createData: '12/12/1212',
-      createTime: '16.52',
+      createDate: '12/12/1212',
+      editDate: '16.52',
       isEdited: false,
       isDone: false,
       groupId: '2d373765-d9c7-4415-b664-689e6d0b6bb7',
@@ -203,8 +204,8 @@ const initialState: Todos = {
       id: '23af2cf1-3546-47b9-bb01-99e51217e817',
       taskTitle: 'task 88',
       description: 'description 88',
-      createData: '12/12/1212',
-      createTime: '17.52',
+      createDate: '12/12/1212',
+      editDate: '17.52',
       isEdited: true,
       isDone: false,
       groupId: '2d373765-d9c7-4415-b664-689e6d0b6bb7',
@@ -213,8 +214,8 @@ const initialState: Todos = {
       id: '475163f2-cb66-4aa3-9689-736ba0a2fadc',
       taskTitle: 'task 99',
       description: 'description 99',
-      createData: '12/12/1212',
-      createTime: '18.52',
+      createDate: '12/12/1212',
+      editDate: '18.52',
       isEdited: false,
       isDone: false,
       groupId: 'e65e626c-cb2b-497c-a3f6-24dd80476366',
@@ -223,15 +224,15 @@ const initialState: Todos = {
       id: '7b0f350c-8656-4ae8-b504-73a9e4b98925',
       taskTitle: 'task 100',
       description: 'description 100',
-      createData: '12/12/1212',
-      createTime: '19.52',
+      createDate: '12/12/1212',
+      editDate: '19.52',
       isEdited: true,
       isDone: true,
       groupId: 'e65e626c-cb2b-497c-a3f6-24dd80476366',
     },
   ],
   groupCount: null,
-  taskCount: 10,
+  taskCount: null,
 };
 
 const todos = createSlice({
@@ -287,6 +288,26 @@ const todos = createSlice({
         state.groupCount = payload?.length;
       })
       .addCase(deleteGroupThunk.rejected, () => {});
+
+    // получение списка задач
+    builder
+      .addCase(getTasksThunk.pending, () => {})
+      .addCase(getTasksThunk.fulfilled, (state, { payload }) => {
+        state.tasks = formatFromUTC(payload);
+        state.filteredTasks = formatFromUTC(payload); // поменять ?
+        state.taskCount = formatFromUTC(payload)?.length;
+      })
+      .addCase(getTasksThunk.rejected, () => {});
+
+    // добавление задачи
+    builder
+      .addCase(addTaskThunk.pending, () => {})
+      .addCase(addTaskThunk.fulfilled, (state, { payload }) => {
+        state.tasks = formatFromUTC(payload);
+        state.filteredTasks = formatFromUTC(payload); // поменять ?
+        state.taskCount = formatFromUTC(payload)?.length;
+      })
+      .addCase(addTaskThunk.rejected, () => {});
   },
 });
 

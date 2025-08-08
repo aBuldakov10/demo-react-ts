@@ -7,7 +7,7 @@ const useTodosActionList = (onClose: () => void) => {
   const groups = useAppSelector(groupsSelector);
 
   const handleAddTask = () => {
-    console.log('Добавить задачу');
+    dispatch(openModal('AddTaskModal'));
     onClose();
   };
 
