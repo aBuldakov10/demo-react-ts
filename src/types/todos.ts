@@ -35,3 +35,9 @@ export interface AddTaskType {
   description: string;
   groupId: string;
 }
+
+// редактирование задачи
+export interface EditTaskType {
+  taskId: string;
+  description: string;
+}

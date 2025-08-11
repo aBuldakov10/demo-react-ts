@@ -33,11 +33,21 @@ export const GroupNoneTasks = styled.span`
   line-height: 1;
 `;
 
-export const EditGroup = styled(EditOutlined)`
+// enable не должен передваться в DOM как boolean, передаваться может только как string.
+// enable надо передвать только внутри компонента styled-components, а не в DOM. для этого используется withConfig.
+export const EditGroup = styled(EditOutlined).withConfig<{ enable: boolean }>({
+  shouldForwardProp: (prop, defaultValidatorFn) => {
+    if (prop === 'enable') return false; // Не передавать 'enable' в DOM
+
+    return defaultValidatorFn(prop);
+  },
+})<{ enable: boolean }>`
   padding: 5px;
   color: ${theme.colors.blue_600};
   border-radius: ${theme.radius_5};
   transition: ${theme.transition};
+  opacity: ${({ enable }) => (enable ? '1' : '0')};
+  pointer-events: ${({ enable }) => (enable ? 'auto' : 'none')};
 
   &:hover {
     color: ${theme.colors.second};
@@ -110,6 +120,7 @@ export const Task = styled.textarea<{ readOnly: boolean }>`
   outline: none;
   transition: ${theme.transition};
   cursor: ${({ readOnly }) => (readOnly ? 'auto' : 'text')};
+  pointer-events: ${({ readOnly }) => (readOnly ? 'none' : '')};
 
   &:focus {
     border-color: ${({ readOnly }) => (readOnly ? '' : theme.colors.black)};

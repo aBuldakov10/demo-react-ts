@@ -12,3 +12,7 @@ export const SORT_OPTIONS = [
   { label: 'Сначала активные', value: 5 },
   { label: 'Сначала завершенные', value: 6 },
 ];
+
+/*** Формат даты ***/
+export const DATE = 'DD.MM.YYYY';
+export const TIME = 'HH:mm';

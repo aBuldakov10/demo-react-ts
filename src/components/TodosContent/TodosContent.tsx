@@ -1,46 +1,56 @@
-import { FC, useState } from 'react';
-import { useAppSelector } from '@/store/hooks';
-import { filteredTasksSelector, groupsSelector } from '@/store/todos/selectors';
+import { FC } from 'react';
+import dayjs from 'dayjs';
+import useTodosContent from './useTodosContent';
+import { DATE, TIME } from '@/utils/constants';
 import * as S from './style';
 
 const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
-  const groups = useAppSelector(groupsSelector);
-  const filteredTasks = useAppSelector(filteredTasksSelector);
+  const {
+    filteredTasks,
+    groups,
+    descTask,
+    check,
+    activeTask,
+    editable,
 
-  const [check, setCheck] = useState<string[]>([]); // тут хранить все чеки
-
-  const toggleCheck = (id: string) => {
-    console.log(id, 'id');
-    console.log(check.includes(id), 'include id');
-
-    if (!check.includes(id)) {
-      // add
-      setCheck([...check, id]);
-    } else {
-      // remove
-      setCheck([...check.filter((item) => item !== id)]);
-    }
-  };
+    handleToggleCheck,
+    handleEditTask,
+    handleDeleteTask,
+    handleCollapseTask,
+    handleChangeDesc,
+    handleBlurDesc,
+  } = useTodosContent();
 
   return (
     <S.Wrapper id={tabId}>
-      {filteredTasks.map(({ id, groupId, taskTitle, description }) => {
+      {filteredTasks.map(({ id, groupId, taskTitle, createDate, editDate, isEdited }) => {
         // временные переменные
         const group = groups.find(({ id }) => id === groupId); // группа текущей задачи
         const groupTasks = filteredTasks.filter(({ groupId }) => group?.id === groupId); // список задач одной группы
         const groupTasksFinished = groupTasks.filter(({ isDone }) => isDone); // список завершенных задач одной группы
 
-        const createItems = (taskTitle: string, description: string) => {
+        const createItems = (id: string, taskTitle: string) => {
+          const thisDesc = descTask.find((item) => item.id === id)!; // объект текущей задачи
+
           return [
             {
               key: '1',
-              label: <span>{taskTitle}</span>,
+              label: `${taskTitle}`,
               children: (
                 <>
-                  <S.Task value={description} cols={30} rows={5} readOnly={true} />
+                  <S.Task
+                    value={thisDesc?.desc}
+                    onChange={(e) => handleChangeDesc(e, id)}
+                    onBlur={() => handleBlurDesc(thisDesc)}
+                    rows={5}
+                    readOnly={editable !== id}
+                  />
 
-                  {/* при изменении отображается 'изменено' и время создания */}
-                  <S.TaskEdited>изменено 12:54</S.TaskEdited>
+                  {isEdited ? (
+                    <S.TaskEdited>изменено {dayjs(editDate).format(TIME)}</S.TaskEdited>
+                  ) : (
+                    <S.TaskEdited>{dayjs(createDate).format(TIME)}</S.TaskEdited>
+                  )}
                 </>
               ),
             },
@@ -60,29 +70,25 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
 
             {/*** Задача ***/}
             <S.TaskWrapper>
-              <S.TaskDoneCheck value={check.includes(id)} onChange={() => toggleCheck(id)} />
+              <S.TaskDoneCheck value={check.includes(id)} onChange={() => handleToggleCheck(id)} />
 
               <S.TaskAction>
-                <S.TaskActionDate>10.10.2000</S.TaskActionDate>
+                <S.TaskActionDate>{dayjs(createDate).format(DATE)}</S.TaskActionDate>
                 <S.EditGroup
-                  title="Редактировать задачу"
-                  onClick={() => {
-                    console.log(id, 'Редактировать задачу c id');
-                  }}
+                  enable={activeTask.includes(id)}
+                  title="Изменить описание"
+                  onClick={() => handleEditTask(id)}
                 />
-                <S.DeleteGroup
-                  title="Удалить задачу"
-                  onClick={() => {
-                    console.log(id, 'Удалить задачу c id');
-                  }}
-                />
+                <S.DeleteGroup title="Удалить задачу" onClick={() => handleDeleteTask(id)} />
               </S.TaskAction>
 
               <S.Accordion
-                rootClassName="task"
-                items={createItems(taskTitle, description)}
+                data-task-id={id}
+                items={createItems(id, taskTitle)}
+                onChange={(e) => handleCollapseTask(e, id)}
                 expandIconPosition="end"
                 bordered={false}
+                destroyOnHidden={true}
               />
             </S.TaskWrapper>
           </S.TodosItem>
