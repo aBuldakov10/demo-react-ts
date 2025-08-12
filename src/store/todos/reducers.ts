@@ -3,6 +3,7 @@ import {
   addGroupThunk,
   addTaskThunk,
   deleteGroupThunk,
+  deleteTaskThunk,
   editGroupThunk,
   editTaskThunk,
   getGroupsThunk,
@@ -13,9 +14,10 @@ import { formatFromUTC } from '@/utils/functions';
 
 interface Todos {
   groups: GroupType[];
-  selectedGroupId: string | null;
   tasks: TaskType[];
   filteredTasks: TaskType[];
+  selectedGroupId: string | null;
+  selectedTaskId: string | null;
   groupCount: null | number;
   taskCount: null | number;
 }
@@ -240,9 +242,10 @@ const initialState: Todos = {
   // ],
 
   groups: [],
-  selectedGroupId: null, // понадобится потом при редактировании, удалении, создании задачи
   tasks: [],
   filteredTasks: [],
+  selectedGroupId: null, // понадобится потом при редактировании, удалении, создании задачи
+  selectedTaskId: null,
   groupCount: null,
   taskCount: null,
 };
@@ -263,6 +266,9 @@ const todos = createSlice({
         state.selectedGroupId = id;
         state.taskCount = state.filteredTasks.length;
       }
+    },
+    setDeleteTaskId(state, { payload }: PayloadAction<string>) {
+      state.selectedTaskId = payload;
     },
   },
   extraReducers: (builder) => {
@@ -329,9 +335,18 @@ const todos = createSlice({
         state.filteredTasks = formatFromUTC(payload);
       })
       .addCase(editTaskThunk.rejected, () => {});
+
+    // удаление задачи
+    builder
+      .addCase(deleteTaskThunk.pending, () => {})
+      .addCase(deleteTaskThunk.fulfilled, (state, { payload }) => {
+        state.tasks = formatFromUTC(payload);
+        state.filteredTasks = formatFromUTC(payload);
+      })
+      .addCase(deleteTaskThunk.rejected, () => {});
   },
 });
 
-export const { selectGroup } = todos.actions;
+export const { selectGroup, setDeleteTaskId } = todos.actions;
 
 export default todos.reducer;

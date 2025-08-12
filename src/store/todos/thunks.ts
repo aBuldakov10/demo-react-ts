@@ -43,3 +43,9 @@ export const editTaskThunk = createAsyncThunk<TaskType[], EditTaskType>(
   'todos/editTaskThunk',
   async ({ taskId, description }) => await api.patch(`/task/${taskId}`, { description })
 );
+
+// удаление задачи
+export const deleteTaskThunk = createAsyncThunk<TaskType[], string>(
+  'todos/deleteTaskThunk',
+  async (taskId) => await api.delete(`/task/${taskId}`)
+);

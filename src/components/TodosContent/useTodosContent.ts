@@ -1,6 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { editTaskThunk } from '@/store/todos/thunks';
+import { openModal } from '@/store/common/reducers';
+import { setDeleteTaskId } from '@/store/todos/reducers';
 import { filteredTasksSelector, groupsSelector } from '@/store/todos/selectors';
 
 const useTodosContent = () => {
@@ -46,7 +48,8 @@ const useTodosContent = () => {
 
   // удаление задачи
   const handleDeleteTask = (taskId: string) => {
-    console.log(taskId, 'Удалить задачу c taskId');
+    dispatch(setDeleteTaskId(taskId));
+    dispatch(openModal('ConfirmDeleteTaskModal'));
   };
 
   // обновить массив раскрытых task при раскрытии/сворачивании аккордеона
