@@ -75,6 +75,15 @@ export const Accordion = styled(Collapse)`
   .ant-collapse-header-text {
     padding-right: 275px;
     padding-left: 50px;
+    transition: ${theme.transition};
+  }
+
+  &.is-done {
+    textarea,
+    .ant-collapse-header-text {
+      color: ${theme.colors.disabled_text};
+      text-decoration: line-through;
+    }
   }
 `;
 

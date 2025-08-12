@@ -4,6 +4,7 @@ import {
   addTaskThunk,
   deleteGroupThunk,
   deleteTaskThunk,
+  doneTaskThunk,
   editGroupThunk,
   editTaskThunk,
   getGroupsThunk,
@@ -344,6 +345,15 @@ const todos = createSlice({
         state.filteredTasks = formatFromUTC(payload);
       })
       .addCase(deleteTaskThunk.rejected, () => {});
+
+    // завершение задачи
+    builder
+      .addCase(doneTaskThunk.pending, () => {})
+      .addCase(doneTaskThunk.fulfilled, (state, { payload }) => {
+        state.tasks = formatFromUTC(payload);
+        state.filteredTasks = formatFromUTC(payload);
+      })
+      .addCase(doneTaskThunk.rejected, () => {});
   },
 });
 

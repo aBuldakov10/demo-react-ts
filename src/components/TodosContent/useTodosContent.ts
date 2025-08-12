@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { editTaskThunk } from '@/store/todos/thunks';
+import { doneTaskThunk, editTaskThunk } from '@/store/todos/thunks';
 import { openModal } from '@/store/common/reducers';
 import { setDeleteTaskId } from '@/store/todos/reducers';
 import { filteredTasksSelector, groupsSelector } from '@/store/todos/selectors';
@@ -10,7 +10,6 @@ const useTodosContent = () => {
   const groups = useAppSelector(groupsSelector);
   const filteredTasks = useAppSelector(filteredTasksSelector);
 
-  const [check, setCheck] = useState<string[]>([]); // тут хранить все чеки
   const [editable, setEditable] = useState(''); // id редактируемого поля
   const [activeTask, setActiveTask] = useState<string[]>([]); // массив раскрытых task
   const [descTask, setDescTask] = useState<{ id: string; desc: string }[]>([]); // описания задач для редактирования
@@ -22,18 +21,7 @@ const useTodosContent = () => {
   }, [filteredTasks]);
 
   // завершение задачи
-  const handleToggleCheck = (taskId: string) => {
-    console.log(taskId, 'id');
-    console.log(check.includes(taskId), 'include id');
-
-    if (!check.includes(taskId)) {
-      // add
-      setCheck([...check, taskId]);
-    } else {
-      // remove
-      setCheck([...check.filter((item) => item !== taskId)]);
-    }
-  };
+  const handleToggleCheck = (taskId: string) => dispatch(doneTaskThunk(taskId));
 
   // редактирование описания
   const handleEditTask = (taskId: string) => {
@@ -79,7 +67,6 @@ const useTodosContent = () => {
     filteredTasks,
     groups,
     descTask,
-    check,
     activeTask,
     editable,
 

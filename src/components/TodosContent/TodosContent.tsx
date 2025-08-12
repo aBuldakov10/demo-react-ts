@@ -9,7 +9,6 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
     filteredTasks,
     groups,
     descTask,
-    check,
     activeTask,
     editable,
 
@@ -23,9 +22,9 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
 
   return (
     <S.Wrapper id={tabId}>
-      {filteredTasks.map(({ id, groupId, taskTitle, createDate, editDate, isEdited }) => {
+      {filteredTasks.map(({ id, taskTitle, createDate, editDate, isEdited, isDone, groupId }) => {
         // временные переменные
-        const group = groups.find(({ id }) => id === groupId); // группа текущей задачи
+        const group = groups.find(({ id }) => id === groupId); // группа текущей задачи для получения названия и цвета
         const groupTasks = filteredTasks.filter(({ groupId }) => group?.id === groupId); // список задач одной группы
         const groupTasksFinished = groupTasks.filter(({ isDone }) => isDone); // список завершенных задач одной группы
 
@@ -70,12 +69,12 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
 
             {/*** Задача ***/}
             <S.TaskWrapper>
-              <S.TaskDoneCheck value={check.includes(id)} onChange={() => handleToggleCheck(id)} />
+              <S.TaskDoneCheck value={isDone} onChange={() => handleToggleCheck(id)} />
 
               <S.TaskAction>
                 <S.TaskActionDate>{dayjs(createDate).format(DATE)}</S.TaskActionDate>
                 <S.EditGroup
-                  enable={activeTask.includes(id)}
+                  enable={activeTask.includes(id) && !isDone}
                   title="Изменить описание"
                   onClick={() => handleEditTask(id)}
                 />
@@ -84,6 +83,7 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
 
               <S.Accordion
                 data-task-id={id}
+                className={isDone ? 'is-done' : ''}
                 items={createItems(id, taskTitle)}
                 onChange={(e) => handleCollapseTask(e, id)}
                 expandIconPosition="end"
