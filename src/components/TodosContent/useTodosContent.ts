@@ -2,13 +2,14 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { doneTaskThunk, editTaskThunk } from '@/store/todos/thunks';
 import { openModal } from '@/store/common/reducers';
-import { setDeleteTaskId } from '@/store/todos/reducers';
-import { filteredTasksSelector, groupsSelector } from '@/store/todos/selectors';
+import { selectGroup, setDeleteTaskId } from '@/store/todos/reducers';
+import { filteredTasksSelector, groupsSelector, selectedTabSelector } from '@/store/todos/selectors';
 
 const useTodosContent = () => {
   const dispatch = useAppDispatch();
   const groups = useAppSelector(groupsSelector);
   const filteredTasks = useAppSelector(filteredTasksSelector);
+  const selectedTab = useAppSelector(selectedTabSelector);
 
   const [editable, setEditable] = useState(''); // id редактируемого поля
   const [activeTask, setActiveTask] = useState<string[]>([]); // массив раскрытых task
@@ -21,7 +22,10 @@ const useTodosContent = () => {
   }, [filteredTasks]);
 
   // завершение задачи
-  const handleToggleCheck = (taskId: string) => dispatch(doneTaskThunk(taskId));
+  const handleToggleCheck = async (taskId: string) => {
+    await dispatch(doneTaskThunk(taskId));
+    dispatch(selectGroup(selectedTab));
+  };
 
   // редактирование описания
   const handleEditTask = (taskId: string) => {
@@ -53,14 +57,17 @@ const useTodosContent = () => {
   };
 
   // сохранение при потере фокуса
-  const handleBlurDesc = ({ id, desc }: { id: string; desc: string }) => {
+  const handleBlurDesc = async ({ id, desc }: { id: string; desc: string }) => {
     setEditable(''); // убрать возможность редактирования поля (установить readOnly)
 
     // отправлять если были изменения
     const obj = filteredTasks.find((item) => item.id === id)!; // объект задачи полученный с сервера
 
     // проверить, были ли изменения в описании
-    if (desc !== obj.description) dispatch(editTaskThunk({ taskId: id, description: desc }));
+    if (desc !== obj.description) {
+      await dispatch(editTaskThunk({ taskId: id, description: desc }));
+      dispatch(selectGroup(selectedTab));
+    }
   };
 
   return {

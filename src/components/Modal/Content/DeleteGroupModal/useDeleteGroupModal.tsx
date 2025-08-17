@@ -3,12 +3,14 @@ import { Select } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { deleteGroupThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
-import { groupsSelector } from '@/store/todos/selectors';
+import { selectGroup } from '@/store/todos/reducers';
+import { groupsSelector, selectedGroupIdSelector } from '@/store/todos/selectors';
 import * as S from './style';
 
 const useDeleteGroupModal = () => {
   const dispatch = useAppDispatch();
   const groups = useAppSelector(groupsSelector);
+  const selectedGroupId = useAppSelector(selectedGroupIdSelector);
 
   const [selectedGroup, setSelectedGroup] = useState<string[]>([]);
   const [allowDelete, setAllowDelete] = useState(false);
@@ -49,8 +51,16 @@ const useDeleteGroupModal = () => {
     if (!dropdownOpened && selectedGroup.length === 1 && value === selectedGroup[0]) setAllowDelete(false);
   };
 
-  const handleSubmit = () => {
-    dispatch(deleteGroupThunk(selectedGroup));
+  const handleSubmit = async () => {
+    const groupList = await dispatch(deleteGroupThunk(selectedGroup)).unwrap(); // список групп после удаления группы
+
+    if (groupList.length === 1) {
+      await dispatch(selectGroup('1'));
+    } else {
+      // выбрать вкладку по умолчанию("все") при удалении группы активной вкладки
+      if (selectedGroupId && selectedGroup.includes(selectedGroupId)) await dispatch(selectGroup('0'));
+    }
+
     dispatch(closeModal());
   };
 

@@ -3,8 +3,8 @@ import { Radio, RadioChangeEvent } from 'antd';
 import * as S from './style';
 
 interface OptionsType {
-  label: string;
   value: string | number;
+  label: string;
   disabled?: boolean;
 }
 

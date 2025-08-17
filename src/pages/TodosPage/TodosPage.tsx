@@ -11,7 +11,8 @@ import useTodosPage from './hooks/useTodosPage';
 import * as S from './style';
 
 const TodosPage: FC = () => {
-  const { groupTabs, groupCount, actionsOpen, taskCount, handleChangeGroup, handleActionsOpenChange } = useTodosPage();
+  const { selectedTab, groupTabs, groupCount, actionsOpen, taskCount, handleChangeGroup, handleActionsOpenChange } =
+    useTodosPage();
 
   return (
     <S.Wrapper>
@@ -24,7 +25,7 @@ const TodosPage: FC = () => {
         <S.TabsWrapper>
           {/*** Вкладки ***/}
           <Tabs
-            defaultActiveKey="0"
+            activeKey={selectedTab}
             type="card"
             items={groupTabs}
             destroyOnHidden={true}
@@ -49,10 +50,7 @@ const TodosPage: FC = () => {
         </S.TabsWrapper>
 
         <S.InfoBlock>
-          {/* Общее количество групп */}
           <div title="Количество групп">Группы: {groupCount}</div>
-
-          {/* Задач в группе */}
           <div title="Задач в группе">Задачи: {taskCount}</div>
 
           {/* удалить завершенные */}

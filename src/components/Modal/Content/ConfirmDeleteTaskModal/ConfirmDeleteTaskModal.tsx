@@ -2,15 +2,19 @@ import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { deleteTaskThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
-import { selectedTaskIdSelector } from '@/store/todos/selectors';
+import { selectGroup } from '@/store/todos/reducers';
+import { selectedTabSelector, selectedTaskIdSelector } from '@/store/todos/selectors';
 import * as S from './style';
 
 const ConfirmDeleteTaskModal: FC = () => {
   const dispatch = useAppDispatch();
   const selectedTaskId = useAppSelector(selectedTaskIdSelector)!;
+  const selectedTab = useAppSelector(selectedTabSelector);
 
-  const handleSubmit = () => {
-    dispatch(deleteTaskThunk(selectedTaskId));
+  const handleSubmit = async () => {
+    await dispatch(deleteTaskThunk(selectedTaskId));
+    await dispatch(selectGroup(selectedTab));
+
     dispatch(closeModal());
   };
 

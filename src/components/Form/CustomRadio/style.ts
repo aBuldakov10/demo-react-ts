@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   .ant-radio-wrapper {
     align-items: center;
 
-    &:hover .ant-radio-inner {
+    &:not(.ant-radio-wrapper-disabled):hover .ant-radio-inner {
       border-color: ${theme.colors.main};
     }
   }

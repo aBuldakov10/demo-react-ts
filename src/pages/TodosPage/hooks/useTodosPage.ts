@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getGroupsThunk, getTasksThunk } from '@/store/todos/thunks';
 import { selectGroup } from '@/store/todos/reducers';
-import { groupCountSelector, taskCountSelector } from '@/store/todos/selectors';
+import { groupCountSelector, selectedTabSelector, taskCountSelector } from '@/store/todos/selectors';
 // Hooks
 import useTodosPageTabs from './useTodosPageTabs';
 
@@ -11,6 +11,7 @@ const useTodosPage = () => {
   const dispatch = useAppDispatch();
   const groupCount = useAppSelector(groupCountSelector);
   const taskCount = useAppSelector(taskCountSelector);
+  const selectedTab = useAppSelector(selectedTabSelector);
 
   const [actionsOpen, setActionsOpen] = useState(false);
 
@@ -22,11 +23,10 @@ const useTodosPage = () => {
   /*** Handlers ***/
   const handleChangeGroup = (key: string) => dispatch(selectGroup(key));
 
-  const handleActionsOpenChange = (state: boolean) => {
-    setActionsOpen(state);
-  };
+  const handleActionsOpenChange = (state: boolean) => setActionsOpen(state);
 
   return {
+    selectedTab,
     groupTabs: useTodosPageTabs(),
     groupCount,
     actionsOpen,

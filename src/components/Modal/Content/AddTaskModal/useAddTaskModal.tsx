@@ -1,10 +1,11 @@
 import { ChangeEvent, ComponentRef, useEffect, useRef, useState } from 'react';
 import { Select } from 'antd';
-import * as S from './style';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { groupsSelector } from '@/store/todos/selectors';
 import { addTaskThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
+import { selectGroup } from '@/store/todos/reducers';
+import { groupsSelector } from '@/store/todos/selectors';
+import * as S from './style';
 
 const useAddTaskModal = () => {
   const dispatch = useAppDispatch();
@@ -43,7 +44,7 @@ const useAddTaskModal = () => {
     setErrorMsg({ ...errorMsg, taskDesc: '' });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedGroup || !taskName || !taskDesc) {
       setErrorMsg({
         group: !selectedGroup ? 'Обязательное поле' : '',
@@ -54,7 +55,11 @@ const useAddTaskModal = () => {
       return false;
     }
 
-    dispatch(addTaskThunk({ taskTitle: taskName, description: taskDesc, groupId: selectedGroup }));
+    const groupObj = groups.find(({ id }) => id === selectedGroup)!; // группа, для которой добавляется задача
+    const indexTab = (groups.indexOf(groupObj) + 1).toString(); // индекс группы во вкладках
+
+    await dispatch(addTaskThunk({ taskTitle: taskName, description: taskDesc, groupId: selectedGroup }));
+    await dispatch(selectGroup(indexTab));
     dispatch(closeModal());
   };
 

@@ -29,13 +29,13 @@ const useAddGroupModal = () => {
     setErrorMsg('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!groupName) {
       setErrorMsg('Обязательное поле');
       return false;
     }
 
-    dispatch(addGroupThunk({ groupTitle: groupName, color: colorStr }));
+    await dispatch(addGroupThunk({ groupTitle: groupName, color: colorStr }));
     dispatch(closeModal());
   };
 

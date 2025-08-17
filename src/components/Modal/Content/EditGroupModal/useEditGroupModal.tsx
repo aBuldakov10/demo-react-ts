@@ -52,13 +52,13 @@ const useEditGroupModal = () => {
     setErrorMsg('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!groupName) {
       setErrorMsg('Обязательное поле');
       return false;
     }
 
-    dispatch(editGroupThunk({ id: selectedGroup, data: { groupTitle: groupName, color: colorStr } }));
+    await dispatch(editGroupThunk({ id: selectedGroup, data: { groupTitle: groupName, color: colorStr } }));
     dispatch(closeModal());
   };
 
