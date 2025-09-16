@@ -55,10 +55,12 @@ export const Actions = styled.div`
 
 export const InfoBlock = styled.div`
   display: flex;
+  align-items: center;
   gap: 50px;
 `;
 
 export const DeleteTasks = styled(DeleteOutlined)`
+  margin-left: auto;
   padding: 5px;
   color: ${theme.colors.red_600};
   border-radius: ${theme.radius_5};

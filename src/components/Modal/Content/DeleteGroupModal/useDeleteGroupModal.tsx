@@ -1,16 +1,17 @@
 import { ComponentRef, useEffect, useRef, useState } from 'react';
 import { Select } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { deleteGroupThunk } from '@/store/todos/thunks';
+import { deleteGroupThunk, getTasksThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
 import { selectGroup } from '@/store/todos/reducers';
-import { groupsSelector, selectedGroupIdSelector } from '@/store/todos/selectors';
+import { groupsSelector, selectedGroupIdSelector, selectedTabSelector } from '@/store/todos/selectors';
 import * as S from './style';
 
 const useDeleteGroupModal = () => {
   const dispatch = useAppDispatch();
   const groups = useAppSelector(groupsSelector);
   const selectedGroupId = useAppSelector(selectedGroupIdSelector);
+  const selectedTab = useAppSelector(selectedTabSelector);
 
   const [selectedGroup, setSelectedGroup] = useState<string[]>([]);
   const [allowDelete, setAllowDelete] = useState(false);
@@ -54,11 +55,15 @@ const useDeleteGroupModal = () => {
   const handleSubmit = async () => {
     const groupList = await dispatch(deleteGroupThunk(selectedGroup)).unwrap(); // список групп после удаления группы
 
+    await dispatch(getTasksThunk()); // получение списка задач
+
     if (groupList.length === 1) {
       await dispatch(selectGroup('1'));
     } else {
-      // выбрать вкладку по умолчанию("все") при удалении группы активной вкладки
-      if (selectedGroupId && selectedGroup.includes(selectedGroupId)) await dispatch(selectGroup('0'));
+      // выбрать вкладку по умолчанию("все") при удалении группы активной вкладки или оставить текущую вкладку
+      selectedGroupId && selectedGroup.includes(selectedGroupId)
+        ? await dispatch(selectGroup('0'))
+        : await dispatch(selectGroup(selectedTab));
     }
 
     dispatch(closeModal());

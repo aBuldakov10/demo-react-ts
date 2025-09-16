@@ -6,13 +6,13 @@ import { selectGroup } from '@/store/todos/reducers';
 import { selectedTabSelector, selectedTaskIdSelector } from '@/store/todos/selectors';
 import * as S from './style';
 
-const ConfirmDeleteTaskModal: FC = () => {
+const DeleteTaskModal: FC = () => {
   const dispatch = useAppDispatch();
   const selectedTaskId = useAppSelector(selectedTaskIdSelector)!;
   const selectedTab = useAppSelector(selectedTabSelector);
 
   const handleSubmit = async () => {
-    await dispatch(deleteTaskThunk(selectedTaskId));
+    await dispatch(deleteTaskThunk([selectedTaskId]));
     await dispatch(selectGroup(selectedTab));
 
     dispatch(closeModal());
@@ -31,4 +31,4 @@ const ConfirmDeleteTaskModal: FC = () => {
   );
 };
 
-export default ConfirmDeleteTaskModal;
+export default DeleteTaskModal;

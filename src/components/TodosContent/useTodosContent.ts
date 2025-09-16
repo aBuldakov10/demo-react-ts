@@ -41,7 +41,7 @@ const useTodosContent = () => {
   // удаление задачи
   const handleDeleteTask = (taskId: string) => {
     dispatch(setDeleteTaskId(taskId));
-    dispatch(openModal('ConfirmDeleteTaskModal'));
+    dispatch(openModal('DeleteTaskModal'));
   };
 
   // обновить массив раскрытых task при раскрытии/сворачивании аккордеона

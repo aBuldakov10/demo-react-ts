@@ -1,15 +1,17 @@
 import AddTaskModal from '@/components/Modal/Content/AddTaskModal/AddTaskModal';
 import AddGroupModal from '@/components/Modal/Content/AddGroupModal/AddGroupModal';
 import EditGroupModal from '@/components/Modal/Content/EditGroupModal/EditGroupModal';
+import DeleteTaskModal from '@/components/Modal/Content/DeleteTaskModal/DeleteTaskModal';
 import DeleteGroupModal from '@/components/Modal/Content/DeleteGroupModal/DeleteGroupModal';
-import ConfirmDeleteTaskModal from '@/components/Modal/Content/ConfirmDeleteTaskModal/ConfirmDeleteTaskModal';
+import DeleteDoneTasksModal from '@/components/Modal/Content/DeleteDoneTasksModal/DeleteDoneTasksModal';
 
 export const MODAL_TITLE = {
   AddGroupModal: 'Добавить группу',
   EditGroupModal: 'Редактирование группы',
   DeleteGroupModal: 'Удаление группы',
   AddTaskModal: 'Добавить задачу',
-  ConfirmDeleteTaskModal: 'Удаление задачи',
+  DeleteTaskModal: 'Удаление задачи',
+  DeleteDoneTasksModal: 'Удаление завершенных задач',
 };
 
 export const MODAL_CONTENT = {
@@ -17,7 +19,8 @@ export const MODAL_CONTENT = {
   EditGroupModal: <EditGroupModal />,
   DeleteGroupModal: <DeleteGroupModal />,
   AddTaskModal: <AddTaskModal />,
-  ConfirmDeleteTaskModal: <ConfirmDeleteTaskModal />,
+  DeleteTaskModal: <DeleteTaskModal />,
+  DeleteDoneTasksModal: <DeleteDoneTasksModal />,
 };
 
 export const MODAL_CONFIG = {

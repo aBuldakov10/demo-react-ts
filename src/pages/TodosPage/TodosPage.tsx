@@ -11,8 +11,17 @@ import useTodosPage from './hooks/useTodosPage';
 import * as S from './style';
 
 const TodosPage: FC = () => {
-  const { selectedTab, groupTabs, groupCount, actionsOpen, taskCount, handleChangeGroup, handleActionsOpenChange } =
-    useTodosPage();
+  const {
+    selectedTab,
+    groupTabs,
+    groupCount,
+    actionsOpen,
+    taskCount,
+    isDone,
+    handleChangeGroup,
+    handleActionsOpenChange,
+    handleDeleteDone,
+  } = useTodosPage();
 
   return (
     <S.Wrapper>
@@ -53,13 +62,7 @@ const TodosPage: FC = () => {
           <div title="Количество групп">Группы: {groupCount}</div>
           <div title="Задач в группе">Задачи: {taskCount}</div>
 
-          {/* удалить завершенные */}
-          {/*<S.DeleteTasks*/}
-          {/*  title="Удалить завершенные"*/}
-          {/*  onClick={() => {*/}
-          {/*    console.log('Удалить завершенные');*/}
-          {/*  }}*/}
-          {/*/>*/}
+          {isDone && <S.DeleteTasks title="Удалить все завершенные" onClick={handleDeleteDone} />}
         </S.InfoBlock>
       </S.Content>
 
