@@ -40,7 +40,9 @@ const useTodosPage = () => {
     groupCount,
     actionsOpen,
     taskCount,
+    tasksFinished: filteredTasks.filter(({ isDone }) => isDone).length, // количество завершенных задач текущей группы
     isDone: filteredTasks.some(({ isDone }) => isDone),
+
     handleChangeGroup,
     handleActionsOpenChange,
     handleDeleteDone,

@@ -17,7 +17,9 @@ const TodosPage: FC = () => {
     groupCount,
     actionsOpen,
     taskCount,
+    tasksFinished,
     isDone,
+
     handleChangeGroup,
     handleActionsOpenChange,
     handleDeleteDone,
@@ -61,6 +63,12 @@ const TodosPage: FC = () => {
         <S.InfoBlock>
           <div title="Количество групп">Группы: {groupCount}</div>
           <div title="Задач в группе">Задачи: {taskCount}</div>
+
+          {selectedTab !== '0' && (
+            <div title="Количество завершенных задач в группе">
+              Завершено: {tasksFinished}/{taskCount}
+            </div>
+          )}
 
           {isDone && <S.DeleteTasks title="Удалить все завершенные" onClick={handleDeleteDone} />}
         </S.InfoBlock>

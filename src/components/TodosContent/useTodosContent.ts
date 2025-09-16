@@ -75,6 +75,7 @@ const useTodosContent = () => {
     groups,
     descTask,
     activeTask,
+    selectedTab,
     editable,
 
     handleToggleCheck,

@@ -10,6 +10,7 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
     groups,
     descTask,
     activeTask,
+    selectedTab,
     editable,
 
     handleToggleCheck,
@@ -23,10 +24,10 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
   return (
     <S.Wrapper id={tabId}>
       {filteredTasks.map(({ id, taskTitle, createDate, editDate, isEdited, isDone, groupId }) => {
-        // временные переменные
         const group = groups.find(({ id }) => id === groupId); // группа текущей задачи для получения названия и цвета
-        const groupTasks = filteredTasks.filter(({ groupId }) => group?.id === groupId); // список задач одной группы
-        const groupTasksFinished = groupTasks.filter(({ isDone }) => isDone); // список завершенных задач одной группы
+        const groupTasks = filteredTasks.filter(({ groupId }) => groupId === group?.id).length; // количество задач одной группы
+        // список завершенных задач одной группы
+        const groupTasksFinished = filteredTasks.filter(({ isDone, groupId }) => isDone && group?.id === groupId);
 
         const createItems = (id: string, taskTitle: string) => {
           const thisDesc = descTask.find((item) => item.id === id)!; // объект текущей задачи
@@ -59,13 +60,15 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
         return (
           <S.TodosItem key={id}>
             {/*** Заголовок группы ***/}
-            <S.TodosHeading>
-              <S.GroupName clr={group?.color}>{group?.groupTitle}</S.GroupName>
+            {selectedTab === '0' && (
+              <S.TodosHeading>
+                <S.GroupName clr={group?.color}>{group?.groupTitle}</S.GroupName>
 
-              <S.GroupNoneTasks>
-                завершено {groupTasksFinished.length}/{groupTasks.length}
-              </S.GroupNoneTasks>
-            </S.TodosHeading>
+                <S.GroupNoneTasks>
+                  Завершено {groupTasksFinished.length}/{groupTasks}
+                </S.GroupNoneTasks>
+              </S.TodosHeading>
+            )}
 
             {/*** Задача ***/}
             <S.TaskWrapper>
