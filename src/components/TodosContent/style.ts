@@ -8,10 +8,10 @@ export const Wrapper = styled.div`
   padding-top: 10px;
 `;
 
-export const TodosItem = styled.div`
-  margin-bottom: 10px;
+export const TodosItem = styled.div<{ lastInGroup: boolean }>`
+  margin-bottom: ${({ lastInGroup }) => (lastInGroup ? '10px' : '')};
   padding: 0 10px 10px;
-  border-bottom: ${theme.border_1};
+  border-bottom: ${({ lastInGroup }) => (lastInGroup ? theme.border_1 : '')};
 `;
 
 export const TodosHeading = styled.div`

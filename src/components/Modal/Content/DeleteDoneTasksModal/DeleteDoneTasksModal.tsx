@@ -2,9 +2,10 @@ import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { deleteTaskThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
-import { selectGroup } from '@/store/todos/reducers';
+import { groupTasks, selectGroup } from '@/store/todos/reducers';
 import {
   filteredTasksSelector,
+  groupedTasksSelector,
   groupsSelector,
   selectedGroupIdSelector,
   selectedTabSelector,
@@ -17,6 +18,7 @@ const DeleteDoneTasksModal: FC = () => {
   const selectedGroupId = useAppSelector(selectedGroupIdSelector);
   const selectedTab = useAppSelector(selectedTabSelector);
   const filteredTasks = useAppSelector(filteredTasksSelector);
+  const groupedTasks = useAppSelector(groupedTasksSelector);
 
   const selectedGroup = selectedGroupId && groups.find(({ id }) => id === selectedGroupId);
 
@@ -28,7 +30,12 @@ const DeleteDoneTasksModal: FC = () => {
     }, []);
 
     await dispatch(deleteTaskThunk(deleteTasks));
-    await dispatch(selectGroup(selectedTab));
+
+    if (groupedTasks) {
+      await dispatch(groupTasks(true));
+    } else {
+      await dispatch(selectGroup(selectedTab));
+    }
 
     dispatch(closeModal());
   };

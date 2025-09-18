@@ -3,6 +3,7 @@ import * as S from './style';
 
 interface CustomCheckProps {
   className?: string;
+  label?: string;
   value: boolean;
   onChange?: (state: boolean) => void;
   children?: JSX.Element;
@@ -10,7 +11,7 @@ interface CustomCheckProps {
 }
 
 const CustomCheck: FC<CustomCheckProps> = (props) => {
-  const { className, value, onChange, disabled, children } = props;
+  const { className, value, onChange, disabled, children, label } = props;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => onChange && onChange(e.target.checked);
 
@@ -19,7 +20,7 @@ const CustomCheck: FC<CustomCheckProps> = (props) => {
       <label>
         <input type="checkbox" checked={value} onChange={handleChange} />
 
-        {children}
+        {label ? <span>{label}</span> : children}
       </label>
     </S.Wrapper>
   );

@@ -2,14 +2,20 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { doneTaskThunk, editTaskThunk } from '@/store/todos/thunks';
 import { openModal } from '@/store/common/reducers';
-import { selectGroup, setDeleteTaskId } from '@/store/todos/reducers';
-import { filteredTasksSelector, groupsSelector, selectedTabSelector } from '@/store/todos/selectors';
+import { groupTasks, selectGroup, setDeleteTaskId } from '@/store/todos/reducers';
+import {
+  filteredTasksSelector,
+  groupedTasksSelector,
+  groupsSelector,
+  selectedTabSelector,
+} from '@/store/todos/selectors';
 
 const useTodosContent = () => {
   const dispatch = useAppDispatch();
   const groups = useAppSelector(groupsSelector);
   const filteredTasks = useAppSelector(filteredTasksSelector);
   const selectedTab = useAppSelector(selectedTabSelector);
+  const groupedTasks = useAppSelector(groupedTasksSelector);
 
   const [editable, setEditable] = useState(''); // id редактируемого поля
   const [activeTask, setActiveTask] = useState<string[]>([]); // массив раскрытых task
@@ -21,10 +27,17 @@ const useTodosContent = () => {
     setDescTask(descriptions);
   }, [filteredTasks]);
 
+  // функция обновления списка задач в зависимости от группировки или выбранной группы
+  const updateTaskListFn = () => {
+    // выполнить группировку либо упорядочить в рамках выбранной группы
+    groupedTasks ? dispatch(groupTasks(true)) : dispatch(selectGroup(selectedTab));
+  };
+
   // завершение задачи
   const handleToggleCheck = async (taskId: string) => {
     await dispatch(doneTaskThunk(taskId));
-    dispatch(selectGroup(selectedTab));
+
+    updateTaskListFn(); // обновить список задач
   };
 
   // редактирование описания
@@ -66,16 +79,19 @@ const useTodosContent = () => {
     // проверить, были ли изменения в описании
     if (desc !== obj.description) {
       await dispatch(editTaskThunk({ taskId: id, description: desc }));
-      dispatch(selectGroup(selectedTab));
+
+      updateTaskListFn(); // обновить список задач
     }
   };
 
   return {
     filteredTasks,
     groups,
+    groupIdList: filteredTasks.map(({ groupId }) => groupId),
     descTask,
     activeTask,
     selectedTab,
+    groupedTasks,
     editable,
 
     handleToggleCheck,

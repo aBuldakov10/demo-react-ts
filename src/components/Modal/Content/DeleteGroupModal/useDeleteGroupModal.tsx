@@ -3,8 +3,13 @@ import { Select } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { deleteGroupThunk, getTasksThunk } from '@/store/todos/thunks';
 import { closeModal } from '@/store/common/reducers';
-import { selectGroup } from '@/store/todos/reducers';
-import { groupsSelector, selectedGroupIdSelector, selectedTabSelector } from '@/store/todos/selectors';
+import { groupTasks, selectGroup } from '@/store/todos/reducers';
+import {
+  groupedTasksSelector,
+  groupsSelector,
+  selectedGroupIdSelector,
+  selectedTabSelector,
+} from '@/store/todos/selectors';
 import * as S from './style';
 
 const useDeleteGroupModal = () => {
@@ -12,6 +17,7 @@ const useDeleteGroupModal = () => {
   const groups = useAppSelector(groupsSelector);
   const selectedGroupId = useAppSelector(selectedGroupIdSelector);
   const selectedTab = useAppSelector(selectedTabSelector);
+  const groupedTasks = useAppSelector(groupedTasksSelector);
 
   const [selectedGroup, setSelectedGroup] = useState<string[]>([]);
   const [allowDelete, setAllowDelete] = useState(false);
@@ -58,12 +64,19 @@ const useDeleteGroupModal = () => {
     await dispatch(getTasksThunk()); // получение списка задач
 
     if (groupList.length === 1) {
-      await dispatch(selectGroup('1'));
+      await dispatch(selectGroup('1')); // если остается одна группа после удаления, выбрать ее
     } else {
-      // выбрать вкладку по умолчанию("все") при удалении группы активной вкладки или оставить текущую вкладку
-      selectedGroupId && selectedGroup.includes(selectedGroupId)
-        ? await dispatch(selectGroup('0'))
-        : await dispatch(selectGroup(selectedTab));
+      // после удаления остается несколько групп
+      if (selectedGroupId && selectedGroup.includes(selectedGroupId)) {
+        await dispatch(selectGroup('0')); // при удалении группы активной вкладки выбрать вкладку по умолчанию("все")
+      } else {
+        // обновить список задач с учетом группировки
+        if (groupedTasks) {
+          await dispatch(groupTasks(true));
+        } else {
+          await dispatch(selectGroup(selectedTab));
+        }
+      }
     }
 
     dispatch(closeModal());

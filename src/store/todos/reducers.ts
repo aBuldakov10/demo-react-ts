@@ -23,6 +23,7 @@ interface Todos {
   selectedTab: string;
   filtered: FilterType;
   sorted: SortType;
+  groupedTasks: boolean;
   groupCount: null | number;
   taskCount: null | number;
 }
@@ -254,6 +255,7 @@ const initialState: Todos = {
   selectedTab: '0',
   filtered: 'all',
   sorted: 'dateDesc',
+  groupedTasks: false,
   groupCount: null,
   taskCount: null,
 };
@@ -264,6 +266,7 @@ const todos = createSlice({
   reducers: {
     selectGroup(state, { payload }: PayloadAction<string>) {
       state.selectedTab = payload;
+      state.groupedTasks = false;
 
       let filtered: TaskType[] = [];
 
@@ -309,56 +312,144 @@ const todos = createSlice({
         state.sorted = 'dateDesc';
       }
 
-      // отфильтровать в пределах группы или без учета группы
-      if (state.selectedGroupId === null) {
-        filtered = state.tasks.filter((item) => {
-          return payload === 'active' ? !item.isDone : payload === 'done' ? item.isDone : item;
-        });
+      if (state.groupedTasks) {
+        state.filteredTasks = state.groups.reduce((accum: TaskType[], current) => {
+          // для каждой итерации групп отфильтровать в соответствии с id группы
+          const filtered = state.tasks.filter(({ groupId }) => groupId === current.id);
+
+          // сформировать группированый массив задач с учетом фильтров и сортировки
+          const arr = filtered
+            .filter((item) => {
+              return payload === 'active' ? !item.isDone : payload === 'done' ? item.isDone : item;
+            })
+            .sort((a, b) => {
+              if (state.sorted === 'dateDesc') return b.createDate?.localeCompare(a.createDate); // сначала поздние
+              if (state.sorted === 'dateAsc') return a.createDate?.localeCompare(b.createDate); // сначала ранние
+              if (state.sorted === 'active') return a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1; // сначала активные
+
+              return a.isDone === b.isDone ? 0 : a.isDone ? -1 : 1; // сначала неактивные
+            });
+
+          accum.push(...arr);
+
+          return accum;
+        }, []);
       } else {
-        filtered = state.tasks.filter(({ groupId, isDone }) => {
-          if (payload === 'active') return groupId === state.selectedGroupId && !isDone;
-          if (payload === 'done') return groupId === state.selectedGroupId && isDone;
+        // отфильтровать в пределах группы или без учета группы
+        if (state.selectedGroupId === null) {
+          filtered = state.tasks.filter((item) => {
+            return payload === 'active' ? !item.isDone : payload === 'done' ? item.isDone : item;
+          });
+        } else {
+          filtered = state.tasks.filter(({ groupId, isDone }) => {
+            if (payload === 'active') return groupId === state.selectedGroupId && !isDone;
+            if (payload === 'done') return groupId === state.selectedGroupId && isDone;
 
-          return groupId === state.selectedGroupId;
+            return groupId === state.selectedGroupId;
+          });
+        }
+
+        // отсортировать отфильтрованный массив
+        state.filteredTasks = filtered.sort((a, b) => {
+          if (state.sorted === 'dateDesc') return b.createDate?.localeCompare(a.createDate);
+
+          return a.createDate?.localeCompare(b.createDate);
         });
+
+        state.taskCount = state.filteredTasks.length;
       }
-
-      // отсортировать отфильтрованный массив
-      state.filteredTasks = filtered.sort((a, b) => {
-        if (state.sorted === 'dateDesc') return b.createDate?.localeCompare(a.createDate);
-
-        return a.createDate?.localeCompare(b.createDate);
-      });
-
-      state.taskCount = state.filteredTasks.length;
     },
     setSortTask(state, { payload }: PayloadAction<SortType>) {
       state.sorted = payload;
 
       let filtered: TaskType[] = [];
 
-      // отфильтровать в пределах группы или без учета группы
-      if (state.selectedGroupId === null) {
-        filtered = state.tasks.filter((item) => {
-          return state.filtered === 'active' ? !item.isDone : state.filtered === 'done' ? item.isDone : item;
-        });
-      } else {
-        filtered = state.tasks.filter(({ groupId, isDone }) => {
-          if (state.filtered === 'active') return groupId === state.selectedGroupId && !isDone;
-          if (state.filtered === 'done') return groupId === state.selectedGroupId && isDone;
+      if (state.groupedTasks) {
+        state.filteredTasks = state.groups.reduce((accum: TaskType[], current) => {
+          // для каждой итерации групп отфильтровать в соответствии с id группы
+          const filtered = state.tasks.filter(({ groupId }) => groupId === current.id);
 
-          return groupId === state.selectedGroupId;
+          // сформировать группированый массив задач с учетом фильтров и сортировки
+          const arr = filtered
+            .filter((item) => {
+              return state.filtered === 'active' ? !item.isDone : state.filtered === 'done' ? item.isDone : item;
+            })
+            .sort((a, b) => {
+              if (payload === 'dateDesc') return b.createDate?.localeCompare(a.createDate); // сначала поздние
+              if (payload === 'dateAsc') return a.createDate?.localeCompare(b.createDate); // сначала ранние
+              if (payload === 'active') return a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1; // сначала активные
+
+              return a.isDone === b.isDone ? 0 : a.isDone ? -1 : 1; // сначала неактивные
+            });
+
+          accum.push(...arr);
+
+          return accum;
+        }, []);
+      } else {
+        // отфильтровать в пределах группы или без учета группы
+        if (state.selectedGroupId === null) {
+          filtered = state.tasks.filter((item) => {
+            return state.filtered === 'active' ? !item.isDone : state.filtered === 'done' ? item.isDone : item;
+          });
+        } else {
+          filtered = state.tasks.filter(({ groupId, isDone }) => {
+            if (state.filtered === 'active') return groupId === state.selectedGroupId && !isDone;
+            if (state.filtered === 'done') return groupId === state.selectedGroupId && isDone;
+
+            return groupId === state.selectedGroupId;
+          });
+        }
+
+        // отсортировать отфильтрованный массив
+        state.filteredTasks = filtered.sort((a, b) => {
+          if (payload === 'dateDesc') return b.createDate?.localeCompare(a.createDate); // сначала поздние
+          if (payload === 'dateAsc') return a.createDate?.localeCompare(b.createDate); // сначала ранние
+          if (payload === 'active') return a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1; // сначала активные
+
+          return a.isDone === b.isDone ? 0 : a.isDone ? -1 : 1; // сначала неактивные
         });
       }
+    },
+    groupTasks(state, { payload }: PayloadAction<boolean>) {
+      state.groupedTasks = payload;
 
-      // отсортировать отфильтрованный массив
-      state.filteredTasks = filtered.sort((a, b) => {
-        if (payload === 'dateDesc') return b.createDate?.localeCompare(a.createDate); // сначала поздние
-        if (payload === 'dateAsc') return a.createDate?.localeCompare(b.createDate); // сначала ранние
-        if (payload === 'active') return a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1; // сначала активные
+      if (payload) {
+        // при группировке надо учитывать фильтр и сортировку. сгруппированые задачи отображаются в порядке вкладок групп
+        state.filteredTasks = state.groups.reduce((accum: TaskType[], current) => {
+          // для каждой итерации групп отфильтровать в соответствии с id группы
+          const filtered = state.tasks.filter(({ groupId }) => groupId === current.id);
 
-        return a.isDone === b.isDone ? 0 : a.isDone ? -1 : 1; // сначала неактивные
-      });
+          // сформировать группированый массив задач с учетом фильтров и сортировки
+          const arr = filtered
+            .filter((item) => {
+              return state.filtered === 'active' ? !item.isDone : state.filtered === 'done' ? item.isDone : item;
+            })
+            .sort((a, b) => {
+              if (state.sorted === 'dateDesc') return b.createDate?.localeCompare(a.createDate); // сначала поздние
+              if (state.sorted === 'dateAsc') return a.createDate?.localeCompare(b.createDate); // сначала ранние
+              if (state.sorted === 'active') return a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1; // сначала активные
+
+              return a.isDone === b.isDone ? 0 : a.isDone ? -1 : 1; // сначала неактивные
+            });
+
+          accum.push(...arr);
+
+          return accum;
+        }, []);
+      } else {
+        state.filteredTasks = state.tasks
+          .filter((item) => {
+            return state.filtered === 'active' ? !item.isDone : state.filtered === 'done' ? item.isDone : item;
+          })
+          .sort((a, b) => {
+            if (state.sorted === 'dateDesc') return b.createDate?.localeCompare(a.createDate); // сначала поздние
+            if (state.sorted === 'dateAsc') return a.createDate?.localeCompare(b.createDate); // сначала ранние
+            if (state.sorted === 'active') return a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1; // сначала активные
+
+            return a.isDone === b.isDone ? 0 : a.isDone ? -1 : 1; // сначала неактивные
+          });
+      }
     },
   },
   extraReducers: (builder) => {
@@ -382,6 +473,7 @@ const todos = createSlice({
 
         state.groups = payload;
         state.groupCount = payload?.length;
+        state.groupedTasks = false;
         state.selectedGroupId = groupObj.id; // id добавленной группы
         state.selectedTab = payload.length.toString(); // вкладка добавленной группы
         state.filteredTasks = [];
@@ -457,6 +549,6 @@ const todos = createSlice({
   },
 });
 
-export const { selectGroup, setDeleteTaskId, setFilterTask, setSortTask } = todos.actions;
+export const { selectGroup, setDeleteTaskId, setFilterTask, setSortTask, groupTasks } = todos.actions;
 
 export default todos.reducer;

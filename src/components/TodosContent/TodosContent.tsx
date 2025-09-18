@@ -8,9 +8,11 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
   const {
     filteredTasks,
     groups,
+    groupIdList,
     descTask,
     activeTask,
     selectedTab,
+    groupedTasks,
     editable,
 
     handleToggleCheck,
@@ -23,11 +25,20 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
 
   return (
     <S.Wrapper id={tabId}>
-      {filteredTasks.map(({ id, taskTitle, createDate, editDate, isEdited, isDone, groupId }) => {
+      {filteredTasks.map(({ id, taskTitle, createDate, editDate, isEdited, isDone, groupId }, index) => {
         const group = groups.find(({ id }) => id === groupId); // группа текущей задачи для получения названия и цвета
         const groupTasks = filteredTasks.filter(({ groupId }) => groupId === group?.id).length; // количество задач одной группы
+
         // список завершенных задач одной группы
         const groupTasksFinished = filteredTasks.filter(({ isDone, groupId }) => isDone && group?.id === groupId);
+        const groupIdIndex = groupIdList.indexOf(groupId); // индекс первого вхождения id группы в массив с id групп
+
+        // условие отображения заголовка с группой для вкладки "Все" с учетом группировки
+        const showTitle = selectedTab === '0' && (!groupedTasks || (groupedTasks && groupIdIndex === index));
+
+        // условие обозначения последнего элемента в группе после группирования
+        // либо обозначения каждого без группирования
+        const isLast = selectedTab === '0' && (!groupedTasks || (groupedTasks && groupId !== groupIdList[index + 1]));
 
         const createItems = (id: string, taskTitle: string) => {
           const thisDesc = descTask.find((item) => item.id === id)!; // объект текущей задачи
@@ -58,9 +69,9 @@ const TodosContent: FC<{ tabId: string }> = ({ tabId }) => {
         };
 
         return (
-          <S.TodosItem key={id}>
+          <S.TodosItem key={id} lastInGroup={isLast}>
             {/*** Заголовок группы ***/}
-            {selectedTab === '0' && (
+            {showTitle && (
               <S.TodosHeading>
                 <S.GroupName clr={group?.color}>{group?.groupTitle}</S.GroupName>
 
