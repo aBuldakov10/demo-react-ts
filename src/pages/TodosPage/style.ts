@@ -4,7 +4,6 @@ import { theme } from '@/styles/theme';
 
 export const Wrapper = styled.div`
   display: flex;
-  align-items: flex-start;
   gap: 30px;
   height: 100%;
 `;
@@ -20,6 +19,10 @@ export const TabsWrapper = styled.div`
   .ant-tabs-nav {
     width: 85%;
     min-height: 62px;
+  }
+
+  .ant-tabs-tabpane {
+    padding: 10px 0;
   }
 `;
 

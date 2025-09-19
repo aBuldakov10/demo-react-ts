@@ -5,6 +5,18 @@ export default createGlobalStyle`
 * {
   box-sizing: border-box;
   margin: 0;
+  
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  // &::-webkit-scrollbar-track {
+  //   background: ${theme.colors.main};
+  // }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.second};
+  }
 }
 
 html,
@@ -15,7 +27,7 @@ body {
 }
 
 ::selection {
-    background: ${theme.colors.second};
+  background: ${theme.colors.second};
 }
 
 html,

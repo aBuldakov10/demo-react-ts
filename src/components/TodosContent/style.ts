@@ -5,13 +5,18 @@ import CustomCheck from '../Form/CustomCheck/CustomCheck';
 import { theme } from '@/styles/theme';
 
 export const Wrapper = styled.div`
-  padding-top: 10px;
+  height: calc(100vh - 302px);
+  overflow: auto;
 `;
 
 export const TodosItem = styled.div<{ lastInGroup: boolean }>`
   margin-bottom: ${({ lastInGroup }) => (lastInGroup ? '10px' : '')};
   padding: 0 10px 10px;
   border-bottom: ${({ lastInGroup }) => (lastInGroup ? theme.border_1 : '')};
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export const TodosHeading = styled.div`

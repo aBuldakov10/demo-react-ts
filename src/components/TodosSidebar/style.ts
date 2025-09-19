@@ -4,8 +4,6 @@ import CustomCheck from '@/components/Form/CustomCheck/CustomCheck';
 import { theme } from '@/styles/theme';
 
 export const Wrapper = styled.div`
-  position: sticky;
-  top: 72px;
   width: 20%;
   min-width: 230px;
 
