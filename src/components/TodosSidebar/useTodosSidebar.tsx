@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CollapseProps, RadioChangeEvent } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setFilterTask, setSortTask, groupTasks } from '@/store/todos/reducers';
@@ -11,6 +12,8 @@ const useTodosSidebar = () => {
   const sorted = useAppSelector(sortedSelector);
   const selectedTab = useAppSelector(selectedTabSelector);
   const groupedTasks = useAppSelector(groupedTasksSelector);
+
+  const [openState, setOpenState] = useState(false);
 
   // добавить disabled для сортировки завершенных при выборе фильтра активных или завершенных
   const SORT_OPTIONS_MAPPED = SORT_OPTIONS.map((item) => {
@@ -43,7 +46,9 @@ const useTodosSidebar = () => {
 
   const handleGroupTasks = (state: boolean) => dispatch(groupTasks(state));
 
-  return { sidebarItems, selectedTab, groupedTasks, handleGroupTasks };
+  const handleToggleMenu = () => setOpenState(!openState);
+
+  return { openState, sidebarItems, selectedTab, groupedTasks, handleGroupTasks, handleToggleMenu };
 };
 
 export default useTodosSidebar;
