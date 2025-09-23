@@ -6,11 +6,11 @@ interface ErrorType {
   statusCode?: number;
 }
 
-export const api = axios.create({ baseURL: 'http://0.0.0.0:8000/' });
+export const todosApi = axios.create({ baseURL: 'https://todos-be-3371.onrender.com' });
 
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => config);
+todosApi.interceptors.request.use((config: InternalAxiosRequestConfig) => config);
 
-api.interceptors.response.use(
+todosApi.interceptors.response.use(
   (response) => response.data,
   (error: AxiosError<ErrorType>) => {
     message({

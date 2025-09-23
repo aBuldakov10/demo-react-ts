@@ -12,5 +12,6 @@ export const filteredSelector = (state: RootState) => state.todos.filtered;
 export const sortedSelector = (state: RootState) => state.todos.sorted;
 export const groupedTasksSelector = (state: RootState) => state.todos.groupedTasks;
 
+export const isLoadingSelector = (state: RootState) => state.todos.isLoading;
 export const groupCountSelector = (state: RootState) => state.todos.groupCount;
 export const taskCountSelector = (state: RootState) => state.todos.taskCount;

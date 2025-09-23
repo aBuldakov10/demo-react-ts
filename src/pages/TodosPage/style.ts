@@ -9,6 +9,26 @@ export const Wrapper = styled.div`
   overflow: hidden;
 `;
 
+export const LoadingWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  font-size: 18px;
+`;
+
+export const TimerWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .ant-statistic-content {
+    font-size: 18px;
+  }
+`;
+
 export const Content = styled.div`
   flex-grow: 1;
   width: calc(100% - 280px);

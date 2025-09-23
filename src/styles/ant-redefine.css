@@ -102,3 +102,8 @@
   color: #242424;
   transition: 0.3s ease;
 }
+
+/*** Spinner ***/
+.ant-spin {
+  color: #ff9000;
+}
