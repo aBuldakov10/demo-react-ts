@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ModalTitle } from '@/types/modal';
+import { COMMON_KEY } from '@/store/store-keys';
 
-interface Common {
+interface CommonReducer {
   modalName: ModalTitle | null;
 }
 
-const initialState: Common = {
+const initialState: CommonReducer = {
   modalName: null,
 };
 
-const common = createSlice({
-  name: 'common',
+const commonReducer = createSlice({
+  name: COMMON_KEY,
   initialState,
   reducers: {
     openModal(state, { payload }: PayloadAction<ModalTitle | null>) {
@@ -22,6 +23,6 @@ const common = createSlice({
   },
 });
 
-export const { openModal, closeModal } = common.actions;
+export const { openModal, closeModal } = commonReducer.actions;
 
-export default common.reducer;
+export default commonReducer.reducer;

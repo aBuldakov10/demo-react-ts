@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import common from '../store/common/reducers';
-import todos from '../store/todos/reducers';
+import { COMMON_KEY, TODOS_KEY } from '@/store/store-keys';
+import commonReducer from '../store/common/reducers';
+import todosReducer from '../store/todos/reducers';
 
 export const store = configureStore({
   reducer: {
-    common,
-    todos,
+    [COMMON_KEY]: commonReducer,
+    [TODOS_KEY]: todosReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
   devTools: process.env.NODE_ENV !== 'production',

@@ -10,11 +10,12 @@ import {
   getGroupsThunk,
   getTasksThunk,
 } from './thunks';
+import { TODOS_KEY } from '@/store/store-keys';
 import { GroupType, TaskType } from '@/types/todos';
 import { formatFromUTC } from '@/utils/functions';
 import { FilterType, SortType } from '@/utils/constants';
 
-interface Todos {
+interface TodosReducer {
   isLoading: boolean;
   groups: GroupType[];
   tasks: TaskType[];
@@ -29,7 +30,7 @@ interface Todos {
   taskCount: null | number;
 }
 
-const initialState: Todos = {
+const initialState: TodosReducer = {
   isLoading: true,
   groups: [],
   tasks: [],
@@ -44,8 +45,8 @@ const initialState: Todos = {
   taskCount: null,
 };
 
-const todos = createSlice({
-  name: 'todos',
+const todosReducer = createSlice({
+  name: TODOS_KEY,
   initialState,
   reducers: {
     selectGroup(state, { payload }: PayloadAction<string>) {
@@ -335,6 +336,6 @@ const todos = createSlice({
   },
 });
 
-export const { selectGroup, setDeleteTaskId, setFilterTask, setSortTask, groupTasks } = todos.actions;
+export const { selectGroup, setDeleteTaskId, setFilterTask, setSortTask, groupTasks } = todosReducer.actions;
 
-export default todos.reducer;
+export default todosReducer.reducer;
